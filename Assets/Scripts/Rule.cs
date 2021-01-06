@@ -8,6 +8,9 @@ public sealed class Rule
 
     public Rule(Predicate[] condition, IEffect effect)
     {
+        Assert.NotNull(condition);
+        Assert.NotNull(effect);
+
         this.condition = condition;
         this.effect = effect;
     }
@@ -26,6 +29,6 @@ public sealed class Rule
 
     public void Execute()
     {
-        effect.Execute();
+        effect.Apply();
     }
 }

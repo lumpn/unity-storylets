@@ -7,6 +7,8 @@ public sealed class State
 
     public State(Variable[] variables)
     {
+        Assert.NotNull(variables);
+
         this.variables = variables;
     }
 
@@ -16,7 +18,7 @@ public sealed class State
         var idx = Array.BinarySearch<Variable>(variables, key, VariableIdentifierComparer.Default);
         if (idx < 0)
         {
-            return 0;
+            return int.MinValue;
         }
 
         var variable = variables[idx];

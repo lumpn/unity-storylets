@@ -1,4 +1,4 @@
 public interface IEffect
 {
-    void Execute();
+    void Apply();
 }

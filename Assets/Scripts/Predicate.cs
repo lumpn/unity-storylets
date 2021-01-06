@@ -5,6 +5,9 @@ public struct Predicate
 
     public Predicate(int identifier, int min, int max)
     {
+        Assert.Greater(min, int.MinValue);
+        Assert.LessOrEqual(min, max);
+
         this.identifier = identifier;
         this.min = min;
         this.max = max;

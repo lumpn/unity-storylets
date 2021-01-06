@@ -5,6 +5,8 @@ public sealed class Ruleset
 
     public Ruleset(Rule[] rules)
     {
+        Assert.NotNull(rules);
+
         this.rules = rules;
     }
 

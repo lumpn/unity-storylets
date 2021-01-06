@@ -3,12 +3,31 @@ using System.Linq;
 
 public sealed class RuleBuilder
 {
-    public readonly List<PredicateBuilder> predicateBuilders = new List<PredicateBuilder>();
+    private readonly Lookup lookup;
+    private readonly List<PredicateBuilder> predicateBuilders = new List<PredicateBuilder>();
     public IEffect effect;
 
-    public Rule Build(Lookup lookup)
+    public RuleBuilder(Lookup lookup)
     {
-        var predicates = predicateBuilders.Select(p => p.Build(lookup))
+        this.lookup = lookup;
+    }
+
+    public PredicateBuilder AddPredicate(string identifier)
+    {
+        var builder = new PredicateBuilder(lookup, identifier);
+        predicateBuilders.Add(builder);
+        return builder;
+    }
+
+    public RuleBuilder SetEffect(IEffect effect)
+    {
+        this.effect = effect;
+        return this;
+    }
+
+    public Rule Build()
+    {
+        var predicates = predicateBuilders.Select(p => p.Build())
                                           .OrderBy(p => p, PredicateIdentifierComparer.Default)
                                           .ToArray();
 
