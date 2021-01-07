@@ -28,12 +28,30 @@ namespace Test
             var health = state.AddVariable("bob/health").Set(100);
             var mana = state.AddVariable("bob/mana").Set(100);
 
-            var rule1 = Query(ruleset, state);
-            Assert.IsNull(rule1);
+            {
+                var rule = Query(ruleset, state);
+                Assert.IsNull(rule); // no match
+            }
 
-            mana.Set(5);
-            var rule2 = Query(ruleset, state);
-            Assert.IsNull(rule2);
+            {
+                mana.Set(5);
+                var rule = Query(ruleset, state);
+                Assert.IsNotNull(rule); // out of mana in forest
+                rule.Execute();
+            }
+
+            {
+                location.Set("desert");
+                var rule = Query(ruleset, state);
+                Assert.IsNull(rule); // no match
+            }
+
+            {
+                health.Set(5);
+                var rule = Query(ruleset, state);
+                Assert.IsNotNull(rule); // out of health in desert
+                rule.Execute();
+            }
         }
 
         private static Rule Query(RulesetBuilder ruleset, StateBuilder state)
