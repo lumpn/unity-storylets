@@ -13,7 +13,8 @@ namespace Test
         {
             const int numRules = 1000 * 1000;
 
-            var ruleset = new RulesetBuilder();
+            var lookup = new Lookup();
+            var ruleset = new RulesetBuilder(lookup);
 
             var effect = new LogEffect("Rule executing");
 
@@ -29,7 +30,7 @@ namespace Test
             var compiledRuleset = ruleset.Build();
             Profiler.EndSample();
 
-            var state = new StateBuilder();
+            var state = new StateBuilder(lookup);
             var variable = state.AddVariable(numRules / 2);
 
             variable.Set(0);

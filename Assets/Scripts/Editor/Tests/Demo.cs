@@ -11,20 +11,20 @@ namespace Test
         public void Test()
         {
             var lookup = new Lookup();
-            var ruleset = new RulesetBuilder();
+            var ruleset = new RulesetBuilder(lookup);
 
             var lowHealth = ruleset.AddRule(new LogEffect("Bob could use some water here!"));
-            lowHealth.AddPredicate(lookup, "location").EqualTo(lookup, "desert");
-            lowHealth.AddPredicate(lookup, "bob/health").LessThan(10);
+            lowHealth.AddPredicate("location").EqualTo("desert");
+            lowHealth.AddPredicate("bob/health").LessThan(10);
 
             var lowMana = ruleset.AddRule(new LogEffect("Anybody got some raspberries for bob?"));
-            lowMana.AddPredicate(lookup, "location").EqualTo(lookup, "forest");
-            lowMana.AddPredicate(lookup, "bob/mana").LessThan(10);
+            lowMana.AddPredicate("location").EqualTo("forest");
+            lowMana.AddPredicate("bob/mana").LessThan(10);
 
-            var state = new StateBuilder();
-            var location = state.AddVariable(lookup, "location").Set(lookup, "forest");
-            var health = state.AddVariable(lookup, "bob/health").Set(100);
-            var mana = state.AddVariable(lookup, "bob/mana").Set(100);
+            var state = new StateBuilder(lookup);
+            var location = state.AddVariable("location").Set("forest");
+            var health = state.AddVariable("bob/health").Set(100);
+            var mana = state.AddVariable("bob/mana").Set(100);
 
             {
                 var rule = Query(ruleset, state);
@@ -39,7 +39,7 @@ namespace Test
             }
 
             {
-                location.Set(lookup, "desert");
+                location.Set("desert");
                 var rule = Query(ruleset, state);
                 Assert.IsNull(rule); // no match
             }
