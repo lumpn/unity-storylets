@@ -15,6 +15,8 @@ public sealed class PredicateBuilder
 
     public PredicateBuilder EqualTo(int value)
     {
+        Assert.NotEqual(value, Constants.noValue);
+
         min = value;
         max = value;
         return this;
@@ -22,7 +24,7 @@ public sealed class PredicateBuilder
 
     public PredicateBuilder LessThan(int value)
     {
-        min = int.MinValue + 1;
+        min = Constants.minValue;
         max = value - 1;
         return this;
     }

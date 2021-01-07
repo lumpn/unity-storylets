@@ -1,4 +1,4 @@
-public sealed class Ruleset
+public sealed class Ruleset : IRuleset
 {
     /// rules sorted by specificity
     private readonly Rule[] rules;

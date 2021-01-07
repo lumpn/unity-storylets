@@ -18,7 +18,7 @@ public sealed class State
         var idx = Array.BinarySearch<Variable>(variables, key, VariableIdentifierComparer.Default);
         if (idx < 0)
         {
-            return int.MinValue;
+            return Constants.noValue;
         }
 
         var variable = variables[idx];

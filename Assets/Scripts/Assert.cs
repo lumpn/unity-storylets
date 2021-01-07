@@ -17,6 +17,12 @@ public static class Assert
     }
 
     [DebuggerHidden]
+    public static void NotEqual(int a, int b)
+    {
+        Debug.Assert(a != b);
+    }
+
+    [DebuggerHidden]
     public static void Greater(int a, int b)
     {
         Debug.Assert(a > b);

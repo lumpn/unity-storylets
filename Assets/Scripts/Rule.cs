@@ -1,23 +1,24 @@
 public sealed class Rule
 {
     /// predicates sorted by identifier
-    private readonly Predicate[] condition;
+    private readonly Predicate[] predicates;
     private readonly IEffect effect;
 
-    public int predicateCount { get { return condition.Length; } }
+    public int predicateCount { get { return predicates.Length; } }
+    public Predicate[] Predicates { get { return predicates; } }
 
-    public Rule(Predicate[] condition, IEffect effect)
+    public Rule(Predicate[] predicates, IEffect effect)
     {
-        Assert.NotNull(condition);
+        Assert.NotNull(predicates);
         Assert.NotNull(effect);
 
-        this.condition = condition;
+        this.predicates = predicates;
         this.effect = effect;
     }
 
     public bool Matches(State state)
     {
-        foreach (var predicate in condition)
+        foreach (var predicate in predicates)
         {
             if (!predicate.Matches(state))
             {
