@@ -21,8 +21,7 @@ public sealed class RulesetBuilder
     public IRuleset BuildClustering()
     {
         var rules = BuildRules();
-        var clusterBuilder = new ClusterBuilder(rules);
-        return clusterBuilder.Build();
+        return ClusterBuilder.Build(rules);
     }
 
     private Rule[] BuildRules()

@@ -67,8 +67,21 @@ public static class ClusterBuilder
             return min;
         }
 
-        long delta = (max - min); // int overflow!
-        int pivot = )
+        int mid = (int)(((long)max + (long)min) / 2); // int would overflow no matter what
+
+        var numBelow = predicates.Count(p => IsBelow(p, mid));
+        var numAbove = predicates.Count(p => IsAbove(p, mid));
+
+        if (numBelow < numAbove)
+        {
+            min = mid;
+        }
+        else
+        {
+            max = mid;
+        }
+
+        return FindThreshold(predicates, min, max);
     }
 
     private static bool IsBelow(Predicate predicate, int threshold)
