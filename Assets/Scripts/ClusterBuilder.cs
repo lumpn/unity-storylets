@@ -29,6 +29,12 @@ public static class ClusterBuilder
             var predicates = rules.Where(p => HasPredicate(p, identifier))
                                   .Select(p => GetPredicate(p, identifier))
                                   .ToArray();
+
+            foreach (var predicate in predicates)
+            {
+                UnityEngine.Debug.LogFormat("id {0}, min {1}, max {2}", identifier, predicate.min, predicate.max);
+            }
+
             var threshold = FindThreshold(predicates);
 
             var numBelow = predicates.Count(p => IsBelow(p, threshold));
@@ -57,31 +63,35 @@ public static class ClusterBuilder
     // binary search the threshold that splits the rules into equal halves
     private static int FindThreshold(Predicate[] predicates)
     {
-        return FindThreshold(predicates, int.MinValue, int.MaxValue);
+        return FindThreshold(predicates, int.MinValue, 0, int.MaxValue);
     }
 
-    private static int FindThreshold(Predicate[] predicates, int min, int max)
+    private static int FindThreshold(Predicate[] predicates, int min, int mid, int max)
     {
-        if (min >= max)
+        while (min < mid && mid < max)
         {
-            return min;
+            var numBelow = predicates.Count(p => IsBelow(p, mid));
+            var numAbove = predicates.Count(p => IsAbove(p, mid));
+
+            UnityEngine.Debug.LogFormat("min {0}, mid {1}, max {2}, below {3}, above {4}", min, mid, max, numBelow, numAbove);
+
+            if (numBelow == numAbove)
+            {
+                break;
+            }
+            else if (numBelow < numAbove)
+            {
+                min = mid;
+            }
+            else
+            {
+                max = mid;
+            }
+
+            mid = (int)(((long)max + (long)min) / 2); // int would overflow no matter what
         }
 
-        int mid = (int)(((long)max + (long)min) / 2); // int would overflow no matter what
-
-        var numBelow = predicates.Count(p => IsBelow(p, mid));
-        var numAbove = predicates.Count(p => IsAbove(p, mid));
-
-        if (numBelow < numAbove)
-        {
-            min = mid;
-        }
-        else
-        {
-            max = mid;
-        }
-
-        return FindThreshold(predicates, min, max);
+        return mid;
     }
 
     private static bool IsBelow(Predicate predicate, int threshold)
