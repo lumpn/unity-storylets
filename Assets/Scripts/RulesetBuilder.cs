@@ -3,17 +3,11 @@ using System.Linq;
 
 public sealed class RulesetBuilder
 {
-    private readonly Lookup lookup;
     private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
 
-    public RulesetBuilder(Lookup lookup)
+    public RuleBuilder AddRule(IEffect effect)
     {
-        this.lookup = lookup;
-    }
-
-    public RuleBuilder AddRule()
-    {
-        var builder = new RuleBuilder(lookup);
+        var builder = new RuleBuilder(effect);
         ruleBuilders.Add(builder);
         return builder;
     }

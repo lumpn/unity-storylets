@@ -1,17 +1,14 @@
 public sealed class PredicateBuilder
 {
-    private readonly Lookup lookup;
-
     public int identifier;
     public int min, max;
 
-    public PredicateBuilder(Lookup lookup, string identifier)
+    public PredicateBuilder(int identifier)
     {
-        this.lookup = lookup;
-        this.identifier = lookup.Register(identifier);
+        this.identifier = identifier;
     }
 
-    public PredicateBuilder EqualTo(string value)
+    public PredicateBuilder EqualTo(Lookup lookup, string value)
     {
         return EqualTo(lookup.Register(value));
     }

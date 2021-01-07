@@ -1,16 +1,14 @@
 public sealed class VariableBuilder
 {
-    private readonly Lookup lookup;
     public int identifier;
     public int value;
 
-    public VariableBuilder(Lookup lookup, string identifier)
+    public VariableBuilder(int identifier)
     {
-        this.lookup = lookup;
-        this.identifier = lookup.Register(identifier);
+        this.identifier = identifier;
     }
 
-    public VariableBuilder Set(string value)
+    public VariableBuilder Set(Lookup lookup, string value)
     {
         return Set(lookup.Register(value));
     }

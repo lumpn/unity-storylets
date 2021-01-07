@@ -3,17 +3,16 @@ using System.Linq;
 
 public sealed class StateBuilder
 {
-    private readonly Lookup lookup;
     private readonly List<VariableBuilder> variableBuilders = new List<VariableBuilder>();
 
-    public StateBuilder(Lookup lookup)
+    public VariableBuilder AddVariable(Lookup lookup, string identifier)
     {
-        this.lookup = lookup;
+        return AddVariable(lookup.Register(identifier));
     }
 
-    public VariableBuilder AddVariable(string identifier)
+    public VariableBuilder AddVariable(int identifier)
     {
-        var builder = new VariableBuilder(lookup, identifier);
+        var builder = new VariableBuilder(identifier);
         variableBuilders.Add(builder);
         return builder;
     }
