@@ -30,12 +30,10 @@ public static class ClusterBuilder
                                   .Select(p => GetPredicate(p, identifier))
                                   .ToArray();
 
-            foreach (var predicate in predicates)
-            {
-                UnityEngine.Debug.LogFormat("id {0}, min {1}, max {2}", identifier, predicate.min, predicate.max);
-            }
+            var min = predicates.Min(p => p.min);
+            var max = predicates.Max(p => p.max);
 
-            var threshold = FindThreshold(predicates);
+            var threshold = FindThreshold(predicates, min, max);
 
             var numBelow = predicates.Count(p => IsBelow(p, threshold));
             var numAbove = predicates.Count(p => IsAbove(p, threshold));
@@ -59,17 +57,17 @@ public static class ClusterBuilder
         return null;
     }
 
-
     // binary search the threshold that splits the rules into equal halves
-    private static int FindThreshold(Predicate[] predicates)
+    private static int FindThreshold(Predicate[] predicates, int min, int max)
     {
-        return FindThreshold(predicates, int.MinValue, 0, int.MaxValue);
-    }
-
-    private static int FindThreshold(Predicate[] predicates, int min, int mid, int max)
-    {
-        while (min < mid && mid < max)
+        while (min < max)
         {
+            int mid = (int)(((long)max + (long)min) / 2); // int could overflow no matter what
+            if (mid == min)
+            {
+                return max;
+            }
+
             var numBelow = predicates.Count(p => IsBelow(p, mid));
             var numAbove = predicates.Count(p => IsAbove(p, mid));
 
@@ -77,9 +75,10 @@ public static class ClusterBuilder
 
             if (numBelow == numAbove)
             {
-                break;
+                return mid;
             }
-            else if (numBelow < numAbove)
+
+            if (numBelow < numAbove)
             {
                 min = mid;
             }
@@ -87,11 +86,9 @@ public static class ClusterBuilder
             {
                 max = mid;
             }
-
-            mid = (int)(((long)max + (long)min) / 2); // int would overflow no matter what
         }
 
-        return mid;
+        return max;
     }
 
     private static bool IsBelow(Predicate predicate, int threshold)
