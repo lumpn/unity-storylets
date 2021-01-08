@@ -31,6 +31,17 @@ public sealed class PredicateBuilder
         return this;
     }
 
+    public PredicateBuilder Between(int min, int max)
+    {
+        Assert.NotEqual(min, Constants.noValue);
+        Assert.NotEqual(max, Constants.noValue);
+        Assert.LessOrEqual(min, max);
+
+        this.min = min;
+        this.max = max;
+        return this;
+    }
+
     public Predicate Build()
     {
         return new Predicate(identifier, min, max);

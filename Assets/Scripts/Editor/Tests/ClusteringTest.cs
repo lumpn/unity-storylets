@@ -1,10 +1,9 @@
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine.Profiling;
 
 namespace Test
 {
-    using Assert = NUnit.Framework.Assert;
-
     [TestFixture]
     public sealed class ClusteringTest
     {
@@ -25,6 +24,54 @@ namespace Test
             Profiler.BeginSample("Clustering");
             var clustering = ruleset.BuildClustering();
             Profiler.EndSample();
+        }
+
+        [Test]
+        public void RandomClustering()
+        {
+            const int numRules = 100;
+            const int numPredicates = 10;
+            const int numIdentifiers = 11;
+            const int minValue = 0;
+            const int maxValue = 100;
+
+            var identifiers = Enumerable.Range(0, numIdentifiers).ToArray();
+
+            var lookup = new Lookup();
+            var ruleset = new RulesetBuilder(lookup);
+            var effect = new LogEffect("effect");
+            var random = new System.Random(0);
+
+            for (int i = 0; i < numRules; i++)
+            {
+                Shuffle(identifiers, random);
+
+                var rule = ruleset.AddRule(effect);
+                for (int j = 0; j < numPredicates; j++)
+                {
+                    var id = identifiers[j];
+                    var value = random.Next(minValue, maxValue);
+
+                    var pred = rule.AddPredicate(id);
+                    pred.EqualTo(value);
+                }
+            }
+
+            Profiler.BeginSample("Clustering");
+            var clustering = ruleset.BuildClustering();
+            Profiler.EndSample();
+        }
+
+        private static void Shuffle(int[] values, System.Random random)
+        {
+            int n = values.Length;
+            for (int i = 0; i < n - 1; i++)
+            {
+                int j = random.Next(i, n);
+                var tmp = values[i];
+                values[i] = values[j];
+                values[j] = tmp;
+            }
         }
     }
 }

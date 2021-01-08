@@ -33,6 +33,8 @@ public static class ClusterBuilder
             var min = predicates.Min(p => p.min);
             var max = predicates.Max(p => p.max);
 
+            UnityEngine.Debug.LogFormat("id {0}, predicates {1}, min {2}, max {3}", identifier, predicates.Length, min, max);
+
             var threshold = FindThreshold(predicates, min, max);
 
             var numBelow = predicates.Count(p => IsBelow(p, threshold));
