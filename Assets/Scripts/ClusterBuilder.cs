@@ -3,6 +3,8 @@ using System;
 
 public static class ClusterBuilder
 {
+    private const int minClusterSize = 10;
+
     //                     T                      threshold
     // |----------------------------------------| range
     //            |-----|                         rule 1 (min <= max < t)
@@ -22,7 +24,10 @@ public static class ClusterBuilder
                                .Distinct()
                                .OrderBy(p => p);
 
+        UnityEngine.Debug.LogFormat("Build cluster for {0} rules", rules.Length);
+
         int bestIdentifier = -1;
+        int bestThreshold = 0;
         int numBest = int.MaxValue;
         foreach (var identifier in identifiers)
         {
@@ -48,15 +53,31 @@ public static class ClusterBuilder
             {
                 numBest = num;
                 bestIdentifier = identifier;
+                bestThreshold = threshold;
             }
 
             UnityEngine.Debug.LogFormat("id {0}, threshold {1}, below {2}, above {3}, no predicate {4}, total {5}, best {6}, best id {7}",
                 identifier, threshold, numBelow, numAbove, numNoPredicate, num, numBest, bestIdentifier);
         }
 
-        // TODO Jonas: split the rules and create cluster
+        var numCut = rules.Length - numBest;
+        if (numCut < minClusterSize)
+        {
+            UnityEngine.Debug.LogFormat("Cut {0} too small. Keep {1} rules", numCut, rules.Length);
+            return new Ruleset(rules);
+        }
 
-        return null;
+        var rulesBelow = rules.Where(p => IsBelow(p, bestIdentifier, bestThreshold)).ToArray();
+        var rulesAbove = rules.Where(p => IsAbove(p, bestIdentifier, bestThreshold)).ToArray();
+
+        UnityEngine.Debug.LogFormat("cluster for {0} rules: cut {1}, id {2}, threshold {3}, below {4}, above {5}",
+            rules.Length, numCut, bestIdentifier, bestThreshold, rulesBelow.Length, rulesAbove.Length);
+
+        // hierarchical clustering
+        var below = Build(rulesBelow);
+        var above = Build(rulesAbove);
+
+        return new Cluster(bestIdentifier, bestThreshold, below, above);
     }
 
     // binary search the threshold that splits the rules into equal halves
@@ -101,6 +122,30 @@ public static class ClusterBuilder
     private static bool IsAbove(Predicate predicate, int threshold)
     {
         return predicate.max >= threshold;
+    }
+
+    private static bool IsBelow(Rule rule, int identifier, int threshold)
+    {
+        var idx = PredicateIndex(rule, identifier);
+        if (idx < 0)
+        {
+            return true;
+        }
+
+        var predicate = rule.Predicates[idx];
+        return IsBelow(predicate, threshold);
+    }
+
+    private static bool IsAbove(Rule rule, int identifier, int threshold)
+    {
+        var idx = PredicateIndex(rule, identifier);
+        if (idx < 0)
+        {
+            return true;
+        }
+
+        var predicate = rule.Predicates[idx];
+        return IsAbove(predicate, threshold);
     }
 
     private static bool HasPredicate(Rule rule, int identifier)
