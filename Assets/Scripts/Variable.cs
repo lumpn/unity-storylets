@@ -1,7 +1,7 @@
 public struct Variable
 {
     public readonly int identifier;
-    public readonly int value;
+    public int value;
 
     public Variable(int identifier, int value)
     {

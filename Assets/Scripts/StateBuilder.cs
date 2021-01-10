@@ -25,10 +25,7 @@ public sealed class StateBuilder
 
     public State Build()
     {
-        var variables = variableBuilders.Select(p => p.Build())
-                                        .OrderBy(p => p, VariableIdentifierComparer.Default)
-                                        .ToArray();
-
+        var variables = variableBuilders.Select(p => p.Build());
         return new State(variables);
     }
 }

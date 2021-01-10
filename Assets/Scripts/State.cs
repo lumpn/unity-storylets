@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-public sealed class State
+public sealed class State : IState
 {
     /// variables sorted by identifier
     private readonly Variable[] variables;
 
-    public State(Variable[] variables)
+    public State(IEnumerable<Variable> variables)
     {
         Assert.NotNull(variables);
 
-        this.variables = variables;
+        var array = variables.ToArray();
+        Array.Sort(array, VariableIdentifierComparer.Default);
+        this.variables = array;
     }
 
     public int GetValue(int identifier)
