@@ -1,6 +1,9 @@
-public static class Constants
+namespace Lumpn.Storylets
 {
-    public const int noValue = int.MinValue;
-    public const int minValue = int.MinValue + 1;
-    public const int maxValue = int.MaxValue;
+    public static class Constants
+    {
+        public const int NoValue = int.MinValue;
+        public const int MinValue = int.MinValue + 1;
+        public const int MaxValue = int.MaxValue;
+    }
 }

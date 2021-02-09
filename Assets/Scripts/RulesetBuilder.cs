@@ -1,39 +1,42 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public sealed class RulesetBuilder
+namespace Lumpn.Storylets
 {
-    private readonly Lookup lookup;
-    private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
-
-    public RulesetBuilder(Lookup lookup)
+    public sealed class RulesetBuilder
     {
-        this.lookup = lookup;
-    }
+        private readonly Lookup lookup;
+        private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
 
-    public RuleBuilder AddRule(IEffect effect)
-    {
-        var builder = new RuleBuilder(lookup, effect);
-        ruleBuilders.Add(builder);
-        return builder;
-    }
+        public RulesetBuilder(Lookup lookup)
+        {
+            this.lookup = lookup;
+        }
 
-    public Ruleset Build()
-    {
-        var rules = BuildRules();
-        return new Ruleset(rules);
-    }
+        public RuleBuilder AddRule(IEffect effect)
+        {
+            var builder = new RuleBuilder(lookup, effect);
+            ruleBuilders.Add(builder);
+            return builder;
+        }
 
-    public IRuleset BuildClustering()
-    {
-        var rules = BuildRules();
-        return ClusterBuilder.Build(rules);
-    }
+        public Ruleset Build()
+        {
+            var rules = BuildRules();
+            return new Ruleset(rules);
+        }
 
-    private Rule[] BuildRules()
-    {
-        return ruleBuilders.Select(p => p.Build())
-                           .OrderBy(p => p, RuleSpecificityComparer.Default)
-                           .ToArray();
+        public IRuleset BuildClustering()
+        {
+            var rules = BuildRules();
+            return ClusterBuilder.Build(rules);
+        }
+
+        private Rule[] BuildRules()
+        {
+            return ruleBuilders.Select(p => p.Build())
+                               .OrderBy(p => p, RuleSpecificityComparer.Default)
+                               .ToArray();
+        }
     }
 }

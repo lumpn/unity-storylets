@@ -1,31 +1,34 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public sealed class StateBuilder
+namespace Lumpn.Storylets
 {
-    private readonly Lookup lookup;
-    private readonly List<VariableBuilder> variableBuilders = new List<VariableBuilder>();
-
-    public StateBuilder(Lookup lookup)
+    public sealed class StateBuilder
     {
-        this.lookup = lookup;
-    }
+        private readonly Lookup lookup;
+        private readonly List<VariableBuilder> variableBuilders = new List<VariableBuilder>();
 
-    public VariableBuilder AddVariable(string identifier)
-    {
-        return AddVariable(lookup.Register(identifier));
-    }
+        public StateBuilder(Lookup lookup)
+        {
+            this.lookup = lookup;
+        }
 
-    public VariableBuilder AddVariable(int identifier)
-    {
-        var builder = new VariableBuilder(lookup, identifier);
-        variableBuilders.Add(builder);
-        return builder;
-    }
+        public VariableBuilder AddVariable(string identifier)
+        {
+            return AddVariable(lookup.Register(identifier));
+        }
 
-    public State Build()
-    {
-        var variables = variableBuilders.Select(p => p.Build());
-        return new State(variables);
+        public VariableBuilder AddVariable(int identifier)
+        {
+            var builder = new VariableBuilder(lookup, identifier);
+            variableBuilders.Add(builder);
+            return builder;
+        }
+
+        public State Build()
+        {
+            var variables = variableBuilders.Select(p => p.Build());
+            return new State(variables);
+        }
     }
 }

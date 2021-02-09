@@ -2,7 +2,7 @@ using System.Linq;
 using NUnit.Framework;
 using UnityEngine.Profiling;
 
-namespace Test
+namespace Lumpn.Storylets.Tests
 {
     [TestFixture]
     public sealed class ClusteringTest

@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 
-public sealed class RuleSpecificityComparer : IComparer<Rule>
+namespace Lumpn.Storylets
 {
-    public static readonly RuleSpecificityComparer Default = new RuleSpecificityComparer();
-
-    public int Compare(Rule a, Rule b)
+    /// orders rules by predicate count descending
+    public sealed class RuleSpecificityComparer : IComparer<Rule>
     {
-        return a.predicateCount - b.predicateCount; // TODO Jonas: or the other way around?
+        public static readonly RuleSpecificityComparer Default = new RuleSpecificityComparer();
+
+        public int Compare(Rule a, Rule b)
+        {
+            return b.predicateCount - a.predicateCount;
+        }
     }
 }

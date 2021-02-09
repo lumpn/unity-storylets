@@ -1,4 +1,7 @@
-public interface IEffect
+namespace Lumpn.Storylets
 {
-    void Apply();
+    public interface IEffect
+    {
+        void Apply();
+    }
 }

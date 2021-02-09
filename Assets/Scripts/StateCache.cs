@@ -1,39 +1,46 @@
-public sealed class StateCache : IState
+namespace Lumpn.Storylets
 {
-    private struct Entry
+    public sealed class StateCache : IState
     {
-        public int call;
-        public int id;
-        public int value;
-    }
-
-    private readonly Entry[] entries;
-    private readonly IState state;
-    private int call = 0;
-
-    public StateCache(int capacity, IState state)
-    {
-        this.entries = new Entry[capacity];
-        this.state = state;
-    }
-
-    public int GetValue(int identifier)
-    {
-        call++;
-        var idx = identifier % entries.Length;
-        var entry = entries[idx];
-
-        if (entry.call == call && entry.id == identifier)
+        private struct Entry
         {
-            // cache hit
-            return entry.value;
+            public int call;
+            public int variableIdentifier;
+            public int variableValue;
         }
 
-        // cache miss
-        var value = state.GetValue(identifier);
-        entry.call = call;
-        entry.id = identifier;
-        entry.value = value;
-        return value;
+        private readonly Entry[] entries;
+        private readonly IState state;
+        private int call = 1;
+
+        public StateCache(IState state, int capacity)
+        {
+            this.entries = new Entry[capacity];
+            this.state = state;
+        }
+
+        public void Invalidate()
+        {
+            call++;
+        }
+
+        public int GetValue(int identifier)
+        {
+            var idx = identifier % entries.Length;
+            var entry = entries[idx];
+
+            if (entry.call == call && entry.variableIdentifier == identifier)
+            {
+                // cache hit
+                return entry.variableValue;
+            }
+
+            // cache miss
+            var value = state.GetValue(identifier);
+            entry.call = call;
+            entry.variableIdentifier = identifier;
+            entry.variableValue = value;
+            return value;
+        }
     }
 }

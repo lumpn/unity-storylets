@@ -1,4 +1,7 @@
-public interface IState
+namespace Lumpn.Storylets
 {
-    int GetValue(int identifier);
+    public interface IState
+    {
+        int GetValue(int identifier);
+    }
 }

@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public sealed class LogEffect : IEffect
+namespace Lumpn.Storylets
 {
-    private readonly string message;
-
-    public LogEffect(string message)
+    public sealed class LogEffect : IEffect
     {
-        this.message = message;
-    }
+        private readonly string message;
 
-    public void Apply()
-    {
-        Debug.Log(message);
+        public LogEffect(string message)
+        {
+            this.message = message;
+        }
+
+        public void Apply()
+        {
+            Debug.Log(message);
+        }
     }
 }

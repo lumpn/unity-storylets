@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine.Profiling;
 
-namespace Test
+namespace Lumpn.Storylets.Tests
 {
     using Assert = NUnit.Framework.Assert;
 

@@ -1,29 +1,32 @@
 using System;
 using System.Collections.Generic;
 
-public sealed class Lookup
+namespace Lumpn.Storylets
 {
-    private readonly Dictionary<string, int> symbols = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
-    public int Register(string symbol)
+    public sealed class Lookup
     {
-        if (symbols.TryGetValue(symbol, out int result))
+        private readonly Dictionary<string, int> symbols = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+        public int Register(string symbol)
         {
+            if (symbols.TryGetValue(symbol, out int result))
+            {
+                return result;
+            }
+
+            result = symbols.Count;
+            symbols.Add(symbol, result);
             return result;
         }
 
-        result = symbols.Count;
-        symbols.Add(symbol, result);
-        return result;
-    }
-
-    public int Query(string symbol)
-    {
-        if (symbols.TryGetValue(symbol, out int result))
+        public int Query(string symbol)
         {
-            return result;
-        }
+            if (symbols.TryGetValue(symbol, out int result))
+            {
+                return result;
+            }
 
-        return -1;
+            return -1;
+        }
     }
 }

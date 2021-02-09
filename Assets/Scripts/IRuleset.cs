@@ -1,4 +1,7 @@
-public interface IRuleset
+namespace Lumpn.Storylets
 {
-    Rule Query(State state);
+    public interface IRuleset
+    {
+        Rule Query(IState state);
+    }
 }

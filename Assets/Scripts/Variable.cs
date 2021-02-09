@@ -1,11 +1,14 @@
-public struct Variable
+namespace Lumpn.Storylets
 {
-    public readonly int identifier;
-    public int value;
-
-    public Variable(int identifier, int value)
+    public struct Variable
     {
-        this.identifier = identifier;
-        this.value = value;
+        public readonly int identifier;
+        public int value;
+
+        public Variable(int identifier, int value)
+        {
+            this.identifier = identifier;
+            this.value = value;
+        }
     }
 }

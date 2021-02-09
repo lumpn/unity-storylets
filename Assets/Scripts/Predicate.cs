@@ -1,27 +1,32 @@
-public struct Predicate
+using Lumpn.Storylets.Utils;
+
+namespace Lumpn.Storylets
 {
-    public readonly int identifier;
-    public readonly int min, max;
-
-    // [min, max] both inclusive
-    public Predicate(int identifier, int min, int max)
+    public struct Predicate
     {
-        Assert.LessOrEqual(min, max);
+        public readonly int identifier;
+        public readonly int min, max;
 
-        this.identifier = identifier;
-        this.min = min;
-        this.max = max;
-    }
+        // [min, max] both inclusive
+        public Predicate(int identifier, int min, int max)
+        {
+            Assert.LessOrEqual(min, max);
 
-    public bool Matches(int value)
-    {
-        return (value >= min)
-            && (value <= max);
-    }
+            this.identifier = identifier;
+            this.min = min;
+            this.max = max;
+        }
 
-    public bool Matches(IState state)
-    {
-        var value = state.GetValue(identifier);
-        return Matches(value);
+        public bool Matches(int value)
+        {
+            return (value >= min)
+                && (value <= max);
+        }
+
+        public bool Matches(IState state)
+        {
+            var value = state.GetValue(identifier);
+            return Matches(value);
+        }
     }
 }

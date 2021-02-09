@@ -1,9 +1,7 @@
 using NUnit.Framework;
 
-namespace Test
+namespace Lumpn.Storylets.Tests
 {
-    using Assert = NUnit.Framework.Assert;
-
     [TestFixture]
     public sealed class Demo
     {

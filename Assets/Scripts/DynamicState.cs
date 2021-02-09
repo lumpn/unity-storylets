@@ -1,23 +1,26 @@
 using System.Collections.Generic;
 
-public sealed class DynamicState : IState
+namespace Lumpn.Storylets
 {
-    private readonly Dictionary<int, Variable> variables = new Dictionary<int, Variable>();
-
-    public Variable AddVariable(int identifier, int value)
+    public sealed class DynamicState : IState
     {
-        var variable = new Variable(identifier, value);
-        variables.Add(identifier, variable);
-        return variable;
-    }
+        private readonly Dictionary<int, Variable> variables = new Dictionary<int, Variable>();
 
-    public int GetValue(int identifier)
-    {
-        if (variables.TryGetValue(identifier, out Variable variable))
+        public Variable AddVariable(int identifier, int value)
         {
-            return variable.value;
+            var variable = new Variable(identifier, value);
+            variables.Add(identifier, variable);
+            return variable;
         }
 
-        return Constants.noValue;
+        public int GetValue(int identifier)
+        {
+            if (variables.TryGetValue(identifier, out Variable variable))
+            {
+                return variable.value;
+            }
+
+            return Constants.NoValue;
+        }
     }
 }

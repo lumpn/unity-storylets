@@ -1,48 +1,53 @@
-public sealed class PredicateBuilder
+using Lumpn.Storylets.Utils;
+
+namespace Lumpn.Storylets
 {
-    private readonly Lookup lookup;
-    public int identifier;
-    public int min, max;
-
-    public PredicateBuilder(Lookup lookup, int identifier)
+    public sealed class PredicateBuilder
     {
-        this.lookup = lookup;
-        this.identifier = identifier;
-    }
+        private readonly Lookup lookup;
+        public int identifier;
+        public int min, max;
 
-    public PredicateBuilder EqualTo(string value)
-    {
-        return EqualTo(lookup.Register(value));
-    }
+        public PredicateBuilder(Lookup lookup, int identifier)
+        {
+            this.lookup = lookup;
+            this.identifier = identifier;
+        }
 
-    public PredicateBuilder EqualTo(int value)
-    {
-        min = value;
-        max = value;
-        return this;
-    }
+        public PredicateBuilder EqualTo(string value)
+        {
+            return EqualTo(lookup.Register(value));
+        }
 
-    public PredicateBuilder LessThan(int value)
-    {
-        min = Constants.minValue;
-        max = value - 1;
-        return this;
-    }
+        public PredicateBuilder EqualTo(int value)
+        {
+            min = value;
+            max = value;
+            return this;
+        }
 
-    // [min, max] both inclusive
-    public PredicateBuilder Between(int min, int max)
-    {
-        Assert.NotEqual(min, Constants.noValue);
-        Assert.NotEqual(max, Constants.noValue);
-        Assert.LessOrEqual(min, max);
+        public PredicateBuilder LessThan(int value)
+        {
+            min = Constants.MinValue;
+            max = value - 1;
+            return this;
+        }
 
-        this.min = min;
-        this.max = max;
-        return this;
-    }
+        // [min, max] both inclusive
+        public PredicateBuilder Between(int min, int max)
+        {
+            Assert.NotEqual(min, Constants.NoValue);
+            Assert.NotEqual(max, Constants.NoValue);
+            Assert.LessOrEqual(min, max);
 
-    public Predicate Build()
-    {
-        return new Predicate(identifier, min, max);
+            this.min = min;
+            this.max = max;
+            return this;
+        }
+
+        public Predicate Build()
+        {
+            return new Predicate(identifier, min, max);
+        }
     }
 }

@@ -1,25 +1,30 @@
-public sealed class Ruleset : IRuleset
+using Lumpn.Storylets.Utils;
+
+namespace Lumpn.Storylets
 {
-    /// rules sorted by specificity
-    private readonly Rule[] rules;
-
-    public Ruleset(Rule[] rules)
+    public sealed class Ruleset : IRuleset
     {
-        Assert.NotNull(rules);
+        /// rules sorted by specificity
+        private readonly Rule[] rules;
 
-        this.rules = rules;
-    }
-
-    public Rule Query(State state)
-    {
-        foreach (var rule in rules)
+        public Ruleset(Rule[] rules)
         {
-            if (rule.Matches(state))
-            {
-                return rule;
-            }
+            Assert.NotNull(rules);
+
+            this.rules = rules;
         }
 
-        return null;
+        public Rule Query(IState state)
+        {
+            foreach (var rule in rules)
+            {
+                if (rule.Matches(state))
+                {
+                    return rule;
+                }
+            }
+
+            return null;
+        }
     }
 }

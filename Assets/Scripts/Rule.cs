@@ -1,35 +1,40 @@
-public sealed class Rule
+using Lumpn.Storylets.Utils;
+
+namespace Lumpn.Storylets
 {
-    /// predicates sorted by identifier
-    private readonly Predicate[] predicates;
-    private readonly IEffect effect;
-
-    public int predicateCount { get { return predicates.Length; } }
-    public Predicate[] Predicates { get { return predicates; } }
-
-    public Rule(Predicate[] predicates, IEffect effect)
+    public sealed class Rule
     {
-        Assert.NotNull(predicates);
-        Assert.NotNull(effect);
+        /// predicates sorted by identifier
+        private readonly Predicate[] predicates;
+        private readonly IEffect effect;
 
-        this.predicates = predicates;
-        this.effect = effect;
-    }
+        public int predicateCount { get { return predicates.Length; } }
+        public Predicate[] Predicates { get { return predicates; } }
 
-    public bool Matches(IState state)
-    {
-        foreach (var predicate in predicates)
+        public Rule(Predicate[] predicates, IEffect effect)
         {
-            if (!predicate.Matches(state))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+            Assert.NotNull(predicates);
+            Assert.NotNull(effect);
 
-    public void Execute()
-    {
-        effect.Apply();
+            this.predicates = predicates;
+            this.effect = effect;
+        }
+
+        public bool Matches(IState state)
+        {
+            foreach (var predicate in predicates)
+            {
+                if (!predicate.Matches(state))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void Execute()
+        {
+            effect.Apply();
+        }
     }
 }

@@ -1,28 +1,31 @@
-public sealed class VariableBuilder
+namespace Lumpn.Storylets
 {
-    private readonly Lookup lookup;
-    public int identifier;
-    public int value;
-
-    public VariableBuilder(Lookup lookup, int identifier)
+    public sealed class VariableBuilder
     {
-        this.lookup = lookup;
-        this.identifier = identifier;
-    }
+        private readonly Lookup lookup;
+        public int identifier;
+        public int value;
 
-    public VariableBuilder Set(string value)
-    {
-        return Set(lookup.Register(value));
-    }
+        public VariableBuilder(Lookup lookup, int identifier)
+        {
+            this.lookup = lookup;
+            this.identifier = identifier;
+        }
 
-    public VariableBuilder Set(int value)
-    {
-        this.value = value;
-        return this;
-    }
+        public VariableBuilder Set(string value)
+        {
+            return Set(lookup.Register(value));
+        }
 
-    public Variable Build()
-    {
-        return new Variable(identifier, value);
+        public VariableBuilder Set(int value)
+        {
+            this.value = value;
+            return this;
+        }
+
+        public Variable Build()
+        {
+            return new Variable(identifier, value);
+        }
     }
 }
