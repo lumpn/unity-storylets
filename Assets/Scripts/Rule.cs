@@ -16,7 +16,7 @@ public sealed class Rule
         this.effect = effect;
     }
 
-    public bool Matches(State state)
+    public bool Matches(IState state)
     {
         foreach (var predicate in predicates)
         {

@@ -3,9 +3,9 @@ public struct Predicate
     public readonly int identifier;
     public readonly int min, max;
 
+    // [min, max] both inclusive
     public Predicate(int identifier, int min, int max)
     {
-        Assert.Greater(min, int.MinValue);
         Assert.LessOrEqual(min, max);
 
         this.identifier = identifier;
@@ -13,15 +13,15 @@ public struct Predicate
         this.max = max;
     }
 
-    public bool Evaluate(int value)
+    public bool Matches(int value)
     {
         return (value >= min)
             && (value <= max);
     }
 
-    public bool Matches(State state)
+    public bool Matches(IState state)
     {
         var value = state.GetValue(identifier);
-        return Evaluate(value);
+        return Matches(value);
     }
 }

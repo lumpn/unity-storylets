@@ -17,8 +17,6 @@ public sealed class PredicateBuilder
 
     public PredicateBuilder EqualTo(int value)
     {
-        Assert.NotEqual(value, Constants.noValue);
-
         min = value;
         max = value;
         return this;
@@ -31,6 +29,7 @@ public sealed class PredicateBuilder
         return this;
     }
 
+    // [min, max] both inclusive
     public PredicateBuilder Between(int min, int max)
     {
         Assert.NotEqual(min, Constants.noValue);
