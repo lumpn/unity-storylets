@@ -13,11 +13,11 @@ namespace Lumpn.Storylets.Tests
             var lookup = new Lookup();
             var ruleset = new RulesetBuilder(lookup);
 
-            var lowHealth = ruleset.AddRule(new LogEffect("Bob could use some water here!"));
+            var lowHealth = ruleset.AddRule(new LogAction("Bob could use some water here!"));
             lowHealth.AddPredicate("location").EqualTo("desert");
             lowHealth.AddPredicate("bob/health").LessThan(10);
 
-            var lowMana = ruleset.AddRule(new LogEffect("Anybody got some raspberries for bob?"));
+            var lowMana = ruleset.AddRule(new LogAction("Anybody got some raspberries for bob?"));
             lowMana.AddPredicate("location").EqualTo("forest");
             lowMana.AddPredicate("bob/mana").LessThan(10);
 
@@ -39,7 +39,7 @@ namespace Lumpn.Storylets.Tests
 
             var lookup = new Lookup();
             var ruleset = new RulesetBuilder(lookup);
-            var effect = new LogEffect("effect");
+            var effect = new LogAction("effect");
             var random = new System.Random(0);
 
             for (int i = 0; i < numRules; i++)

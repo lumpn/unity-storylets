@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace Lumpn.Storylets
 {
-    public sealed class LogEffect : IEffect
+    public sealed class LogAction : IAction
     {
         private readonly string message;
 
-        public LogEffect(string message)
+        public LogAction(string message)
         {
             this.message = message;
         }
 
-        public void Apply()
+        public void Execute()
         {
             Debug.Log(message);
         }

@@ -16,7 +16,7 @@ namespace Lumpn.Storylets.Tests
             var lookup = new Lookup();
             var ruleset = new RulesetBuilder(lookup);
 
-            var effect = new LogEffect("Rule executing");
+            var effect = new LogAction("Rule executing");
 
             Profiler.BeginSample("Ruleset");
             for (int i = 0; i < numRules; i++)

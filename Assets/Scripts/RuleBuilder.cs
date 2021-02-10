@@ -7,12 +7,12 @@ namespace Lumpn.Storylets
     {
         private readonly Lookup lookup;
         private readonly List<PredicateBuilder> predicateBuilders = new List<PredicateBuilder>();
-        public IEffect effect;
+        public IAction action;
 
-        public RuleBuilder(Lookup lookup, IEffect effect)
+        public RuleBuilder(Lookup lookup, IAction action)
         {
             this.lookup = lookup;
-            this.effect = effect;
+            this.action = action;
         }
 
         public PredicateBuilder AddPredicate(string identifier)
@@ -27,9 +27,9 @@ namespace Lumpn.Storylets
             return builder;
         }
 
-        public RuleBuilder SetEffect(IEffect effect)
+        public RuleBuilder SetAction(IAction action)
         {
-            this.effect = effect;
+            this.action = action;
             return this;
         }
 
@@ -39,7 +39,7 @@ namespace Lumpn.Storylets
                                               .OrderBy(p => p, PredicateIdentifierComparer.Default)
                                               .ToArray();
 
-            return new Rule(predicates, effect);
+            return new Rule(predicates, action);
         }
     }
 }

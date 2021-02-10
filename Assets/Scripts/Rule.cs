@@ -6,18 +6,18 @@ namespace Lumpn.Storylets
     {
         /// predicates sorted by identifier
         private readonly Predicate[] predicates;
-        private readonly IEffect effect;
+        private readonly IAction action;
 
         public int predicateCount { get { return predicates.Length; } }
         public Predicate[] Predicates { get { return predicates; } }
 
-        public Rule(Predicate[] predicates, IEffect effect)
+        public Rule(Predicate[] predicates, IAction action)
         {
             Assert.NotNull(predicates);
-            Assert.NotNull(effect);
+            Assert.NotNull(action);
 
             this.predicates = predicates;
-            this.effect = effect;
+            this.action = action;
         }
 
         public bool Matches(IState state)
@@ -34,7 +34,7 @@ namespace Lumpn.Storylets
 
         public void Execute()
         {
-            effect.Apply();
+            action.Execute();
         }
     }
 }

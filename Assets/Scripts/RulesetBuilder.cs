@@ -13,9 +13,9 @@ namespace Lumpn.Storylets
             this.lookup = lookup;
         }
 
-        public RuleBuilder AddRule(IEffect effect)
+        public RuleBuilder AddRule(IAction action)
         {
-            var builder = new RuleBuilder(lookup, effect);
+            var builder = new RuleBuilder(lookup, action);
             ruleBuilders.Add(builder);
             return builder;
         }
