@@ -6,11 +6,10 @@ namespace Lumpn.Storylets
     {
         private readonly Dictionary<int, Variable> variables = new Dictionary<int, Variable>();
 
-        public Variable AddVariable(int identifier, int value)
+        public void SetValue(int identifier, int value)
         {
             var variable = new Variable(identifier, value);
-            variables.Add(identifier, variable);
-            return variable;
+            variables[identifier] = variable;
         }
 
         public int GetValue(int identifier)
