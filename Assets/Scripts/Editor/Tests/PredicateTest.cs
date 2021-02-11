@@ -42,7 +42,7 @@ namespace Lumpn.Storylets.Tests
         }
 
         [Test]
-        public void TestMatches()
+        public void TestMatchesValue()
         {
             var a = new Predicate(1, 0, 0);
             var b = new Predicate(2, 0, 0);
@@ -63,6 +63,14 @@ namespace Lumpn.Storylets.Tests
             Assert.IsFalse(a.Matches(10));
             Assert.IsFalse(b.Matches(10));
             Assert.IsFalse(c.Matches(10));
+        }
+
+        [Test]
+        public void TestMatchesState()
+        {
+            var a = new Predicate(1, 0, 0);
+            var b = new Predicate(2, 0, 0);
+            var c = new Predicate(1, 0, 9);
 
             var state = new DynamicState();
             Assert.IsFalse(a.Matches(state)); // variable not found

@@ -27,7 +27,7 @@ namespace Lumpn.Storylets.Tests
 
             {
                 var rule = Query(ruleset, state);
-                Assert.IsNull(rule); // no match
+                Assert.IsNull(rule); // good on mana in forest
             }
 
             {
@@ -40,7 +40,7 @@ namespace Lumpn.Storylets.Tests
             {
                 location.Set("desert");
                 var rule = Query(ruleset, state);
-                Assert.IsNull(rule); // no match
+                Assert.IsNull(rule); // good on health in desert
             }
 
             {

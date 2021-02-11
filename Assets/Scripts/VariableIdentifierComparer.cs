@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Lumpn.Storylets
 {
-    /// Orders variables by identifier ascending
+    /// orders variables by identifier ascending
     public sealed class VariableIdentifierComparer : IComparer<Variable>
     {
         public static readonly VariableIdentifierComparer Default = new VariableIdentifierComparer();

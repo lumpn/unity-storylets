@@ -23,5 +23,22 @@ namespace Lumpn.Storylets.Tests
 
             Assert.AreEqual(Constants.NoValue, state.GetValue(100));
         }
+
+        [Test]
+        public void TestSetValue()
+        {
+            var variable = new Variable(1, 1);
+            var state = new State(new[] { variable });
+
+            Assert.AreEqual(variable.value, state.GetValue(variable.identifier));
+
+            var set1 = state.SetValue(1, 2);
+            Assert.IsTrue(set1);
+            Assert.AreEqual(2, state.GetValue(1));
+
+            var set2 = state.SetValue(2, 0);
+            Assert.IsFalse(set2);
+            Assert.AreEqual(Constants.NoValue, state.GetValue(2));
+        }
     }
 }
