@@ -1,4 +1,5 @@
 using System.Linq;
+using Lumpn.Storylets.Builders;
 using NUnit.Framework;
 using UnityEngine.Profiling;
 
@@ -11,7 +12,7 @@ namespace Lumpn.Storylets.Tests
         public void ClusterAnalysis()
         {
             var lookup = new Lookup();
-            var ruleset = new RulesetBuilder(lookup);
+            var ruleset = new ClusterBuilder(lookup);
 
             var lowHealth = ruleset.AddRule(new LogAction("Bob could use some water here!"));
             lowHealth.AddPredicate("location").EqualTo("desert");
@@ -22,7 +23,7 @@ namespace Lumpn.Storylets.Tests
             lowMana.AddPredicate("bob/mana").LessThan(10);
 
             Profiler.BeginSample("Clustering");
-            var clustering = ruleset.BuildClustering();
+            var clustering = ruleset.Build();
             Profiler.EndSample();
         }
 
@@ -38,7 +39,7 @@ namespace Lumpn.Storylets.Tests
             var identifiers = Enumerable.Range(0, numIdentifiers).ToArray();
 
             var lookup = new Lookup();
-            var ruleset = new RulesetBuilder(lookup);
+            var ruleset = new ClusterBuilder(lookup);
             var effect = new LogAction("effect");
             var random = new System.Random(0);
 
@@ -58,7 +59,7 @@ namespace Lumpn.Storylets.Tests
             }
 
             Profiler.BeginSample("Clustering");
-            var clustering = ruleset.BuildClustering();
+            var clustering = ruleset.Build();
             Profiler.EndSample();
         }
 

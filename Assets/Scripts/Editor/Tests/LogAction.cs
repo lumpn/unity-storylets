@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Tests
 {
     public sealed class LogAction : IAction
     {

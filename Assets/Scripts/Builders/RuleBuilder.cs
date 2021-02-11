@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Builders
 {
     public sealed class RuleBuilder
     {
@@ -22,6 +22,7 @@ namespace Lumpn.Storylets
 
         public PredicateBuilder AddPredicate(int identifier)
         {
+            // TODO Jonas: disallow existing identifier
             var builder = new PredicateBuilder(lookup, identifier);
             predicateBuilders.Add(builder);
             return builder;
@@ -35,10 +36,8 @@ namespace Lumpn.Storylets
 
         public Rule Build()
         {
-            var predicates = predicateBuilders.Select(p => p.Build())
-                                              .OrderBy(p => p, PredicateIdentifierComparer.Default)
-                                              .ToArray();
-
+            // TODO Jonas: filter distinct?
+            var predicates = predicateBuilders.Select(p => p.Build());
             return new Rule(predicates, action);
         }
     }

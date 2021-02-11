@@ -1,4 +1,7 @@
 using Lumpn.Storylets.Utils;
+using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Lumpn.Storylets
 {
@@ -11,12 +14,14 @@ namespace Lumpn.Storylets
         public int predicateCount { get { return predicates.Length; } }
         public Predicate[] Predicates { get { return predicates; } }
 
-        public Rule(Predicate[] predicates, IAction action)
+        public Rule(IEnumerable<Predicate> predicates, IAction action)
         {
             Assert.NotNull(predicates);
             Assert.NotNull(action);
 
-            this.predicates = predicates;
+            var array = predicates.ToArray();
+            Array.Sort(array, PredicateIdentifierComparer.Default);
+            this.predicates = array;
             this.action = action;
         }
 

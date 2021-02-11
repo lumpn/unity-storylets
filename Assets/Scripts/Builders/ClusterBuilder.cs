@@ -1,11 +1,40 @@
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Builders
 {
-    public static class ClusterBuilder
+    public sealed class ClusterBuilder
     {
         private const int minClusterSize = 10;
+
+        private readonly Lookup lookup;
+        private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
+
+        public ClusterBuilder(Lookup lookup)
+        {
+            this.lookup = lookup;
+        }
+
+        public RuleBuilder AddRule(IAction action)
+        {
+            var builder = new RuleBuilder(lookup, action);
+            ruleBuilders.Add(builder);
+            return builder;
+        }
+
+        public IRuleset Build()
+        {
+            var rules = ruleBuilders.Select(p => p.Build());
+            return Build(rules);
+        }
+
+        private static IRuleset Build(IEnumerable<Rule> rules)
+        {
+            var array = rules.ToArray();
+            Array.Sort(array, RuleSpecificityComparer.Default);
+            return Build(array);
+        }
 
         //                     T                      threshold
         // |----------------------------------------| range
@@ -19,7 +48,7 @@ namespace Lumpn.Storylets
         //                     |--------------------| above range
         // => below: rule 1-3
         // => above: rule 2-5
-        public static IRuleset Build(Rule[] rules)
+        private static IRuleset Build(Rule[] rules)
         {
             var identifiers = rules.SelectMany(p => p.Predicates)
                                    .Select(p => p.identifier)
@@ -118,12 +147,12 @@ namespace Lumpn.Storylets
 
         private static bool IsBelow(Predicate predicate, int threshold)
         {
-            return predicate.min < threshold;
+            return (predicate.min < threshold);
         }
 
         private static bool IsAbove(Predicate predicate, int threshold)
         {
-            return predicate.max >= threshold;
+            return (predicate.max >= threshold);
         }
 
         private static bool IsBelow(Rule rule, int identifier, int threshold)
@@ -153,7 +182,7 @@ namespace Lumpn.Storylets
         private static bool HasPredicate(Rule rule, int identifier)
         {
             var idx = PredicateIndex(rule, identifier);
-            return idx >= 0;
+            return (idx >= 0);
         }
 
         private static Predicate GetPredicate(Rule rule, int identifier)

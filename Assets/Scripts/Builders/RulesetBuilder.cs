@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Builders
 {
     public sealed class RulesetBuilder
     {
@@ -22,21 +22,8 @@ namespace Lumpn.Storylets
 
         public Ruleset Build()
         {
-            var rules = BuildRules();
+            var rules = ruleBuilders.Select(p => p.Build());
             return new Ruleset(rules);
-        }
-
-        public IRuleset BuildClustering()
-        {
-            var rules = BuildRules();
-            return ClusterBuilder.Build(rules);
-        }
-
-        private Rule[] BuildRules()
-        {
-            return ruleBuilders.Select(p => p.Build())
-                               .OrderBy(p => p, RuleSpecificityComparer.Default)
-                               .ToArray();
         }
     }
 }

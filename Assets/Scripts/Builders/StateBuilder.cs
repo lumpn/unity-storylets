@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Builders
 {
     public sealed class StateBuilder
     {

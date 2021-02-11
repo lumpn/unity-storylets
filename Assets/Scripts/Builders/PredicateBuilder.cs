@@ -1,6 +1,6 @@
 using Lumpn.Storylets.Utils;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Builders
 {
     public sealed class PredicateBuilder
     {

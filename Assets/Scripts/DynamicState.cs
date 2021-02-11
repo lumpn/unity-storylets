@@ -4,19 +4,18 @@ namespace Lumpn.Storylets
 {
     public sealed class DynamicState : IState
     {
-        private readonly Dictionary<int, Variable> variables = new Dictionary<int, Variable>();
+        private readonly Dictionary<int, int> variables = new Dictionary<int, int>();
 
         public void SetValue(int identifier, int value)
         {
-            var variable = new Variable(identifier, value);
-            variables[identifier] = variable;
+            variables[identifier] = value;
         }
 
         public int GetValue(int identifier)
         {
-            if (variables.TryGetValue(identifier, out Variable variable))
+            if (variables.TryGetValue(identifier, out int value))
             {
-                return variable.value;
+                return value;
             }
 
             return Constants.NoValue;

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Lumpn.Storylets.Utils;
 
 namespace Lumpn.Storylets
@@ -7,11 +10,13 @@ namespace Lumpn.Storylets
         /// rules sorted by specificity
         private readonly Rule[] rules;
 
-        public Ruleset(Rule[] rules)
+        public Ruleset(IEnumerable<Rule> rules)
         {
             Assert.NotNull(rules);
 
-            this.rules = rules;
+            var array = rules.ToArray();
+            Array.Sort(array, RuleSpecificityComparer.Default);
+            this.rules = array;
         }
 
         public Rule Query(IState state)

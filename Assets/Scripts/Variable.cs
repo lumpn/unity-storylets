@@ -3,7 +3,7 @@ namespace Lumpn.Storylets
     public struct Variable
     {
         public readonly int identifier;
-        public int value;
+        public readonly int value;
 
         public Variable(int identifier, int value)
         {
