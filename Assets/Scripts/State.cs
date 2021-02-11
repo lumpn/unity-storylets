@@ -19,10 +19,21 @@ namespace Lumpn.Storylets
             this.variables = array;
         }
 
+        public bool SetValue(int identifier, int value)
+        {
+            var idx = VariableIndex(identifier);
+            if (idx < 0)
+            {
+                return false;
+            }
+
+            variables[idx] = new Variable(identifier, value);
+            return true;
+        }
+
         public int GetValue(int identifier)
         {
-            var key = new Variable(identifier, 0);
-            var idx = Array.BinarySearch<Variable>(variables, key, VariableIdentifierComparer.Default);
+            var idx = VariableIndex(identifier);
             if (idx < 0)
             {
                 return Constants.NoValue;
@@ -30,6 +41,12 @@ namespace Lumpn.Storylets
 
             var variable = variables[idx];
             return variable.value;
+        }
+
+        private int VariableIndex(int identifier)
+        {
+            var key = new Variable(identifier, 0);
+            return Array.BinarySearch<Variable>(variables, key, VariableIdentifierComparer.Default);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Builders
 {
     public sealed class Lookup
     {

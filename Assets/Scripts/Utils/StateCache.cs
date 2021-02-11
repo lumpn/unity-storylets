@@ -1,4 +1,4 @@
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Utils
 {
     public sealed class StateCache : IState
     {

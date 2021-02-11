@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Lumpn.Storylets
+namespace Lumpn.Storylets.Tests
 {
     public sealed class DynamicState : IState
     {
