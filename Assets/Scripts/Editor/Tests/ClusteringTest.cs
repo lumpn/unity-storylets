@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Lumpn.Storylets.Builders;
 using NUnit.Framework;
@@ -9,10 +10,56 @@ namespace Lumpn.Storylets.Tests
     public sealed class ClusteringTest
     {
         [Test]
+        public void TestFindThreshold()
+        {
+            //   0 1 2 3 4 5 6 7 8 9
+            // a |                   a
+            // b |-----|             b
+            // c         |-----|     c
+            // d             |       d
+            // e           |-------| e
+            // f     |               f
+            // g     |-------|
+            var a = new Predicate(1, 0, 0);
+            var b = new Predicate(1, 0, 3);
+            var c = new Predicate(1, 4, 7);
+            var d = new Predicate(1, 6, 6);
+            var e = new Predicate(1, 5, 9);
+            var f = new Predicate(1, 2, 2);
+            var predicates = new[] { a, b, c, d, e, f };
+
+            Assert.AreEqual(4, ClusterBuilder.FindThreshold(predicates, -100, 100));
+            Assert.AreEqual(4, ClusterBuilder.FindThreshold(predicates, int.MinValue, int.MaxValue));
+            Assert.AreEqual(4, ClusterBuilder.FindThreshold(predicates, 0, 9));
+            Assert.AreEqual(4, ClusterBuilder.FindThreshold(predicates, 0, 10));
+
+            var g = new Predicate(1, 2, 6);
+            var predicates2 = new[] { a, b, c, d, e, f, g };
+
+            Assert.AreEqual(4, ClusterBuilder.FindThreshold(predicates2, -100, 100));
+        }
+
+        [Test]
+        public void TestFindThresholdShuffled()
+        {
+            var random = new Random(0);
+            var values = Enumerable.Range(0, 1000).ToArray();
+            Shuffle(values, random);
+
+            // no overlap
+            var predicates = values.Select(p => new Predicate(1, p, p)).ToArray();
+            Assert.AreEqual(500, ClusterBuilder.FindThreshold(predicates, int.MinValue, int.MaxValue));
+
+            // some overlap
+            var predicates2 = values.Select(p => new Predicate(1, p - 5, p + 5)).ToArray();
+            Assert.AreEqual(500, ClusterBuilder.FindThreshold(predicates2, int.MinValue, int.MaxValue));
+        }
+
+        [Test]
         public void ClusterAnalysis()
         {
             var lookup = new Lookup();
-            var ruleset = new ClusterBuilder(lookup);
+            var ruleset = new ClusterBuilder(lookup, 10);
 
             var lowHealth = ruleset.AddRule(new LogAction("Bob could use some water here!"));
             lowHealth.AddPredicate("location").EqualTo("desert");
@@ -28,7 +75,7 @@ namespace Lumpn.Storylets.Tests
         }
 
         [Test]
-        public void RandomClustering()
+        public void TestRandomClustering()
         {
             const int numRules = 100;
             const int numPredicates = 10;
@@ -39,15 +86,15 @@ namespace Lumpn.Storylets.Tests
             var identifiers = Enumerable.Range(0, numIdentifiers).ToArray();
 
             var lookup = new Lookup();
-            var ruleset = new ClusterBuilder(lookup);
-            var effect = new LogAction("effect");
+            var ruleset = new ClusterBuilder(lookup, 10);
+            var action = new LogAction("action");
             var random = new System.Random(0);
 
             for (int i = 0; i < numRules; i++)
             {
                 Shuffle(identifiers, random);
 
-                var rule = ruleset.AddRule(effect);
+                var rule = ruleset.AddRule(action);
                 for (int j = 0; j < numPredicates; j++)
                 {
                     var id = identifiers[j];
@@ -63,6 +110,7 @@ namespace Lumpn.Storylets.Tests
             Profiler.EndSample();
         }
 
+        /// Fisher-Yates shuffle
         private static void Shuffle(int[] values, System.Random random)
         {
             int n = values.Length;

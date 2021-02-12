@@ -6,14 +6,14 @@ namespace Lumpn.Storylets.Builders
 {
     public sealed class ClusterBuilder
     {
-        private const int minClusterSize = 10;
-
-        private readonly Lookup lookup;
         private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
+        private readonly Lookup lookup;
+        private readonly int minClusterSize;
 
-        public ClusterBuilder(Lookup lookup)
+        public ClusterBuilder(Lookup lookup, int minClusterSize)
         {
             this.lookup = lookup;
+            this.minClusterSize = minClusterSize;
         }
 
         public RuleBuilder AddRule(IAction action)
@@ -29,7 +29,7 @@ namespace Lumpn.Storylets.Builders
             return Build(rules);
         }
 
-        private static IRuleset Build(IEnumerable<Rule> rules)
+        private IRuleset Build(IEnumerable<Rule> rules)
         {
             var array = rules.ToArray();
             Array.Sort(array, RuleSpecificityComparer.Default);
@@ -48,7 +48,7 @@ namespace Lumpn.Storylets.Builders
         //                     |--------------------| above range
         // => below: rule 1-3
         // => above: rule 2-5
-        private static IRuleset Build(Rule[] rules)
+        private IRuleset Build(Rule[] rules)
         {
             var identifiers = rules.SelectMany(p => p.Predicates)
                                    .Select(p => p.identifier)
@@ -112,11 +112,11 @@ namespace Lumpn.Storylets.Builders
         }
 
         // binary search the threshold that splits the rules into equal halves
-        private static int FindThreshold(Predicate[] predicates, int min, int max)
+        public static int FindThreshold(Predicate[] predicates, int min, int max)
         {
             while (min < max)
             {
-                int mid = (int)(((long)max + (long)min) / 2); // int could overflow no matter what
+                int mid = (int)(((long)min + (long)max) / 2); // int could overflow no matter what
                 if (mid == min)
                 {
                     return max;
@@ -125,7 +125,7 @@ namespace Lumpn.Storylets.Builders
                 var numBelow = predicates.Count(p => IsBelow(p, mid));
                 var numAbove = predicates.Count(p => IsAbove(p, mid));
 
-                UnityEngine.Debug.LogFormat("min {0}, mid {1}, max {2}, below {3}, above {4}", min, mid, max, numBelow, numAbove);
+                UnityEngine.Debug.LogFormat("min {0}, max {1}, mid {2}, below {3}, above {4}", min, max, mid, numBelow, numAbove);
 
                 if (numBelow == numAbove)
                 {
