@@ -11,8 +11,8 @@ namespace Lumpn.Storylets
         private readonly Predicate[] predicates;
         private readonly IAction action;
 
-        public int predicateCount { get { return predicates.Length; } }
-        public Predicate[] Predicates { get { return predicates; } }
+        public int PredicateCount { get { return predicates.Length; } }
+        public IEnumerable<Predicate> Predicates { get { return predicates; } }
 
         public Rule(IEnumerable<Predicate> predicates, IAction action)
         {
@@ -23,6 +23,17 @@ namespace Lumpn.Storylets
             Array.Sort(array, PredicateIdentifierComparer.Default);
             this.predicates = array;
             this.action = action;
+        }
+
+        public Predicate GetPredicate(int index)
+        {
+            return predicates[index];
+        }
+
+        public int PredicateIndex(int identifier)
+        {
+            var key = new Predicate(identifier, 0, 0);
+            return Array.BinarySearch(predicates, key, PredicateIdentifierComparer.Default);
         }
 
         public bool Matches(IState state)

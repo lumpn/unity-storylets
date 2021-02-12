@@ -1,4 +1,4 @@
-using Lumpn.Storylets.Builders;
+﻿using Lumpn.Storylets.Builders;
 using NUnit.Framework;
 using UnityEngine.Profiling;
 
@@ -12,7 +12,7 @@ namespace Lumpn.Storylets.Tests
         {
             const int numRules = 1000 * 1000;
 
-            var lookup = new Lookup();
+            var lookup = new SymbolLookup();
             var ruleset = new RulesetBuilder(lookup);
 
             var effect = new LogAction("Rule executing");

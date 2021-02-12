@@ -9,7 +9,7 @@ namespace Lumpn.Storylets
 
         public int Compare(Rule a, Rule b)
         {
-            return (b.predicateCount - a.predicateCount);
+            return (b.PredicateCount - a.PredicateCount);
         }
     }
 }

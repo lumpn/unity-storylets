@@ -1,4 +1,4 @@
-using Lumpn.Storylets.Builders;
+﻿using Lumpn.Storylets.Builders;
 using NUnit.Framework;
 
 namespace Lumpn.Storylets.Tests
@@ -9,7 +9,7 @@ namespace Lumpn.Storylets.Tests
         [Test]
         public void Test()
         {
-            var lookup = new Lookup();
+            var lookup = new SymbolLookup();
             var ruleset = new RulesetBuilder(lookup);
 
             var lowHealth = ruleset.AddRule(new LogAction("Bob could use some water here!"));

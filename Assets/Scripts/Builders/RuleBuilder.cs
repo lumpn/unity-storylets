@@ -1,15 +1,15 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Lumpn.Storylets.Builders
 {
     public sealed class RuleBuilder
     {
-        private readonly Lookup lookup;
+        private readonly SymbolLookup lookup;
         private readonly List<PredicateBuilder> predicateBuilders = new List<PredicateBuilder>();
         public IAction action;
 
-        public RuleBuilder(Lookup lookup, IAction action)
+        public RuleBuilder(SymbolLookup lookup, IAction action)
         {
             this.lookup = lookup;
             this.action = action;

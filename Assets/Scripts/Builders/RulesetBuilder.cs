@@ -1,14 +1,14 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Lumpn.Storylets.Builders
 {
     public sealed class RulesetBuilder
     {
-        private readonly Lookup lookup;
+        private readonly SymbolLookup lookup;
         private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
 
-        public RulesetBuilder(Lookup lookup)
+        public RulesetBuilder(SymbolLookup lookup)
         {
             this.lookup = lookup;
         }

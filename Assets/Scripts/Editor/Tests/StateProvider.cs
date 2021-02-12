@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Lumpn.Storylets.Builders;
 
 namespace Lumpn.Storylets.Tests
@@ -6,16 +6,16 @@ namespace Lumpn.Storylets.Tests
     public sealed class StateProvider : IState
     {
         private readonly Dictionary<int, IValueProvider> valueProviders = new Dictionary<int, IValueProvider>();
-        private readonly Lookup lookup;
+        private readonly SymbolLookup lookup;
 
-        public StateProvider(Lookup lookup)
+        public StateProvider(SymbolLookup lookup)
         {
             this.lookup = lookup;
         }
 
         public void Register(IValueProvider valueProvider)
         {
-            var name = valueProvider.name;
+            var name = valueProvider.Name;
             var identifier = lookup.Register(name);
             valueProviders.Add(identifier, valueProvider);
         }
@@ -24,7 +24,7 @@ namespace Lumpn.Storylets.Tests
         {
             if (valueProviders.TryGetValue(identifier, out IValueProvider valueProvider))
             {
-                return valueProvider.value;
+                return valueProvider.Value;
             }
 
             return Constants.NoValue;

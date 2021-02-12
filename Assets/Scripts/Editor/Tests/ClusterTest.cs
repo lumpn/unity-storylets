@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Lumpn.Storylets.Builders;
 using NUnit.Framework;
@@ -7,7 +7,7 @@ using UnityEngine.Profiling;
 namespace Lumpn.Storylets.Tests
 {
     [TestFixture]
-    public sealed class ClusteringTest
+    public sealed class ClusterTest
     {
         [Test]
         public void TestFindThreshold()
@@ -58,7 +58,7 @@ namespace Lumpn.Storylets.Tests
         [Test]
         public void ClusterAnalysis()
         {
-            var lookup = new Lookup();
+            var lookup = new SymbolLookup();
             var ruleset = new ClusterBuilder(lookup, 10);
 
             var lowHealth = ruleset.AddRule(new LogAction("Bob could use some water here!"));
@@ -85,7 +85,7 @@ namespace Lumpn.Storylets.Tests
 
             var identifiers = Enumerable.Range(0, numIdentifiers).ToArray();
 
-            var lookup = new Lookup();
+            var lookup = new SymbolLookup();
             var ruleset = new ClusterBuilder(lookup, 10);
             var action = new LogAction("action");
             var random = new System.Random(0);

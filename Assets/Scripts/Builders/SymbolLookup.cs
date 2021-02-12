@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lumpn.Storylets.Builders
 {
-    public sealed class Lookup
+    public sealed class SymbolLookup
     {
         private readonly Dictionary<string, int> symbols = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 

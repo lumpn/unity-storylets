@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,10 +7,10 @@ namespace Lumpn.Storylets.Builders
     public sealed class ClusterBuilder
     {
         private readonly List<RuleBuilder> ruleBuilders = new List<RuleBuilder>();
-        private readonly Lookup lookup;
+        private readonly SymbolLookup lookup;
         private readonly int minClusterSize;
 
-        public ClusterBuilder(Lookup lookup, int minClusterSize)
+        public ClusterBuilder(SymbolLookup lookup, int minClusterSize)
         {
             this.lookup = lookup;
             this.minClusterSize = minClusterSize;
@@ -157,46 +157,38 @@ namespace Lumpn.Storylets.Builders
 
         private static bool IsBelow(Rule rule, int identifier, int threshold)
         {
-            var idx = PredicateIndex(rule, identifier);
+            var idx = rule.PredicateIndex(identifier);
             if (idx < 0)
             {
                 return true;
             }
 
-            var predicate = rule.Predicates[idx];
+            var predicate = rule.GetPredicate(idx);
             return IsBelow(predicate, threshold);
         }
 
         private static bool IsAbove(Rule rule, int identifier, int threshold)
         {
-            var idx = PredicateIndex(rule, identifier);
+            var idx = rule.PredicateIndex(identifier);
             if (idx < 0)
             {
                 return true;
             }
 
-            var predicate = rule.Predicates[idx];
+            var predicate = rule.GetPredicate(idx);
             return IsAbove(predicate, threshold);
         }
 
         private static bool HasPredicate(Rule rule, int identifier)
         {
-            var idx = PredicateIndex(rule, identifier);
+            var idx = rule.PredicateIndex(identifier);
             return (idx >= 0);
         }
 
         private static Predicate GetPredicate(Rule rule, int identifier)
         {
-            var idx = PredicateIndex(rule, identifier);
-            return rule.Predicates[idx];
-        }
-
-        private static int PredicateIndex(Rule rule, int identifier)
-        {
-            var predicates = rule.Predicates;
-            var key = new Predicate(identifier, 0, 0);
-
-            return Array.BinarySearch(predicates, key, PredicateIdentifierComparer.Default);
+            var idx = rule.PredicateIndex(identifier);
+            return rule.GetPredicate(idx);
         }
     }
 }

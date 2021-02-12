@@ -1,5 +1,5 @@
 public interface IValueProvider
 {
-    string name { get; }
-    int value { get; }
+    string Name { get; }
+    int Value { get; }
 }

@@ -1,14 +1,14 @@
-using Lumpn.Storylets.Utils;
+﻿using Lumpn.Storylets.Utils;
 
 namespace Lumpn.Storylets.Builders
 {
     public sealed class PredicateBuilder
     {
-        private readonly Lookup lookup;
+        private readonly SymbolLookup lookup;
         public int identifier;
         public int min, max;
 
-        public PredicateBuilder(Lookup lookup, int identifier)
+        public PredicateBuilder(SymbolLookup lookup, int identifier)
         {
             this.lookup = lookup;
             this.identifier = identifier;

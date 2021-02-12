@@ -1,12 +1,12 @@
-namespace Lumpn.Storylets.Builders
+﻿namespace Lumpn.Storylets.Builders
 {
     public sealed class VariableBuilder
     {
-        private readonly Lookup lookup;
+        private readonly SymbolLookup lookup;
         public int identifier;
         public int value;
 
-        public VariableBuilder(Lookup lookup, int identifier)
+        public VariableBuilder(SymbolLookup lookup, int identifier)
         {
             this.lookup = lookup;
             this.identifier = identifier;
