@@ -60,9 +60,10 @@ namespace Lumpn.Storylets.Builders
             var identifiers = rules.SelectMany(p => p.Predicates)
                                    .Select(p => p.identifier)
                                    .Distinct()
-                                   .OrderBy(p => p);
+                                   .OrderBy(p => p)
+                                   .ToArray();
 
-            UnityEngine.Debug.LogFormat("Build cluster for {0} rules", rules.Length);
+            UnityEngine.Debug.LogFormat("Build cluster for {0} rules, {1} identifiers", rules.Length, identifiers.Length);
 
             int bestIdentifier = -1;
             int bestThreshold = 0;
@@ -94,7 +95,7 @@ namespace Lumpn.Storylets.Builders
                     bestThreshold = threshold;
                 }
 
-                UnityEngine.Debug.LogFormat("id {0}, threshold {1}, below {2}, above {3}, no predicate {4}, half size {5}, best {6}, best id {7}",
+                UnityEngine.Debug.LogFormat("id {0}, threshold {1}, below {2}, above {3}, no predicate {4}, half size {5}, best size {6}, best id {7}",
                     identifier, threshold, numBelow, numAbove, numNoPredicate, halfSize, bestSize, bestIdentifier);
             }
 
@@ -114,7 +115,7 @@ namespace Lumpn.Storylets.Builders
             var rulesBelow = rules.Where(p => IsBelow(p, bestIdentifier, bestThreshold)).ToArray();
             var rulesAbove = rules.Where(p => IsAbove(p, bestIdentifier, bestThreshold)).ToArray();
 
-            UnityEngine.Debug.LogFormat("cluster for {0} rules: cut {1}, id {2}, threshold {3}, below {4}, above {5}",
+            UnityEngine.Debug.LogFormat("cluster for {0} rules: cut size {1}, identifier {2}, threshold {3}, below {4}, above {5}",
                 rules.Length, numCut, bestIdentifier, bestThreshold, rulesBelow.Length, rulesAbove.Length);
 
             // hierarchical clustering
@@ -135,6 +136,7 @@ namespace Lumpn.Storylets.Builders
                 int mid = (int)(((long)min + (long)max) / 2); // int could overflow no matter what
                 if (mid == min)
                 {
+                    UnityEngine.Debug.LogFormat("min {0}, max {1}, mid {2} bail out", min, max, mid);
                     return max;
                 }
 

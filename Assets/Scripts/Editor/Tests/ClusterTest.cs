@@ -40,7 +40,20 @@ namespace Lumpn.Storylets.Tests
 
             var action = new LogAction("action");
             var rules = predicates.Select(p => new Rule(new[] { p }, action));
-            var cluster = ClusterBuilder.Build(rules, 1);
+            var ruleset = ClusterBuilder.Build(rules, 1);
+            Assert.IsTrue(ruleset is Cluster);  // 6 rules
+
+            var cluster = (Cluster)ruleset;
+            Assert.AreEqual(1, cluster.identifier);
+            Assert.AreEqual(4, cluster.threshold);
+            Assert.IsTrue(cluster.below is Cluster); // 3 rules
+            Assert.IsTrue(cluster.above is Ruleset); // 3 rules
+
+            var below = (Cluster)cluster.below;
+            Assert.AreEqual(1, below.identifier);
+            Assert.AreEqual(1, below.threshold);
+            Assert.IsTrue(below.below is Ruleset); // 2 rules
+            Assert.IsTrue(below.above is Ruleset); // 2 rules
         }
 
         [Test]
@@ -57,25 +70,15 @@ namespace Lumpn.Storylets.Tests
             // some overlap
             var predicates2 = values.Select(p => new Predicate(1, p - 5, p + 5)).ToArray();
             Assert.AreEqual(500, ClusterBuilder.FindThreshold(predicates2, int.MinValue, int.MaxValue));
-        }
 
-        [Test]
-        public void ClusterAnalysis()
-        {
-            var lookup = new SymbolLookup();
-            var ruleset = new ClusterBuilder(lookup, 10);
+            var action = new LogAction("action");
+            var rules = predicates.Select(p => new Rule(new[] { p }, action));
+            var ruleset = ClusterBuilder.Build(rules, 100);
+            Assert.IsTrue(ruleset is Cluster);  // 1000 rules
 
-            var lowHealth = ruleset.AddRule(new LogAction("Bob could use some water here!"));
-            lowHealth.AddPredicate("location").EqualTo("desert");
-            lowHealth.AddPredicate("bob/health").LessThan(10);
-
-            var lowMana = ruleset.AddRule(new LogAction("Anybody got some raspberries for bob?"));
-            lowMana.AddPredicate("location").EqualTo("forest");
-            lowMana.AddPredicate("bob/mana").LessThan(10);
-
-            Profiler.BeginSample("Clustering");
-            var clustering = ruleset.Build();
-            Profiler.EndSample();
+            var cluster = (Cluster)ruleset;
+            Assert.AreEqual(1, cluster.identifier);
+            Assert.AreEqual(500, cluster.threshold);
         }
 
         [Test]
@@ -92,7 +95,7 @@ namespace Lumpn.Storylets.Tests
             var lookup = new SymbolLookup();
             var ruleset = new ClusterBuilder(lookup, 10);
             var action = new LogAction("action");
-            var random = new System.Random(0);
+            var random = new Random(0);
 
             for (int i = 0; i < numRules; i++)
             {
