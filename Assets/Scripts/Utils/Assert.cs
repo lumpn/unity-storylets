@@ -34,5 +34,11 @@ namespace Lumpn.Storylets.Utils
         {
             Debug.Assert(a <= b);
         }
+
+        [DebuggerHidden]
+        public static void LessOrEqual(long a, long b)
+        {
+            Debug.Assert(a <= b);
+        }
     }
 }

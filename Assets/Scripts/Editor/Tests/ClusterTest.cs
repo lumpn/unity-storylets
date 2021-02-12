@@ -93,7 +93,7 @@ namespace Lumpn.Storylets.Tests
             var identifiers = Enumerable.Range(0, numIdentifiers).ToArray();
 
             var lookup = new SymbolLookup();
-            var ruleset = new ClusterBuilder(lookup, 10);
+            var ruleset = new ClusterBuilder(lookup, 1);
             var action = new LogAction("action");
             var random = new Random(0);
 
