@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Lumpn.Storylets.Utils;
 
 namespace Lumpn.Storylets.Builders
 {
@@ -21,12 +22,7 @@ namespace Lumpn.Storylets.Builders
 
         public int Query(string symbol)
         {
-            if (symbols.TryGetValue(symbol, out int result))
-            {
-                return result;
-            }
-
-            return -1;
+            return symbols.GetOrFallback(symbol, -1);
         }
     }
 }

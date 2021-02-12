@@ -25,15 +25,18 @@ namespace Lumpn.Storylets
             this.action = action;
         }
 
-        public Predicate GetPredicate(int index)
-        {
-            return predicates[index];
-        }
-
-        public int PredicateIndex(int identifier)
+        public bool TryGetPredicate(int identifier, out Predicate predicate)
         {
             var key = new Predicate(identifier, 0, 0);
-            return Array.BinarySearch(predicates, key, PredicateIdentifierComparer.Default);
+            var idx = Array.BinarySearch(predicates, key, PredicateIdentifierComparer.Default);
+            if (idx >= 0)
+            {
+                predicate = predicates[idx];
+                return true;
+            }
+
+            predicate = key;
+            return false;
         }
 
         public bool Matches(IState state)

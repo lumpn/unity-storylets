@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Lumpn.Storylets.Utils;
 
 namespace Lumpn.Storylets.Builders
 {
@@ -11,6 +12,9 @@ namespace Lumpn.Storylets.Builders
 
         public RuleBuilder(SymbolLookup lookup, IAction action)
         {
+            Assert.NotNull(lookup);
+            Assert.NotNull(action);
+
             this.lookup = lookup;
             this.action = action;
         }
@@ -30,6 +34,8 @@ namespace Lumpn.Storylets.Builders
 
         public RuleBuilder SetAction(IAction action)
         {
+            Assert.NotNull(action);
+
             this.action = action;
             return this;
         }

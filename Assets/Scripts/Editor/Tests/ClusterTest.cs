@@ -37,6 +37,10 @@ namespace Lumpn.Storylets.Tests
             var predicates2 = new[] { a, b, c, d, e, f, g };
 
             Assert.AreEqual(4, ClusterBuilder.FindThreshold(predicates2, -100, 100));
+
+            var action = new LogAction("action");
+            var rules = predicates.Select(p => new Rule(new[] { p }, action));
+            var cluster = ClusterBuilder.Build(rules, 1);
         }
 
         [Test]

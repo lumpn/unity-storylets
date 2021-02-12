@@ -10,6 +10,8 @@ namespace Lumpn.Storylets.Builders
 
         public PredicateBuilder(SymbolLookup lookup, int identifier)
         {
+            Assert.NotNull(lookup);
+
             this.lookup = lookup;
             this.identifier = identifier;
         }
@@ -21,6 +23,8 @@ namespace Lumpn.Storylets.Builders
 
         public PredicateBuilder EqualTo(int value)
         {
+            Assert.NotEqual(min, Constants.NoValue);
+
             min = value;
             max = value;
             return this;

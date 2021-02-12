@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Lumpn.Storylets.Utils;
 
 namespace Lumpn.Storylets.Tests
 {
@@ -13,12 +14,7 @@ namespace Lumpn.Storylets.Tests
 
         public int GetValue(int identifier)
         {
-            if (variables.TryGetValue(identifier, out int value))
-            {
-                return value;
-            }
-
-            return Constants.NoValue;
+            return variables.GetOrFallback(identifier, Constants.NoValue);
         }
     }
 }

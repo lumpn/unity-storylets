@@ -1,13 +1,18 @@
+using Lumpn.Storylets.Utils;
+
 namespace Lumpn.Storylets
 {
-    /// A clusters of two ruleset separated by a given threshold
+    /// cluster of two ruleset separated by a given threshold
     public sealed class Cluster : IRuleset
     {
-        private readonly int identifier, threshold;
-        private readonly IRuleset below, above;
+        public readonly int identifier, threshold;
+        public readonly IRuleset below, above;
 
         public Cluster(int identifier, int threshold, IRuleset below, IRuleset above)
         {
+            Assert.NotNull(below);
+            Assert.NotNull(above);
+
             this.identifier = identifier;
             this.threshold = threshold;
             this.below = below;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lumpn.Storylets.Utils;
 
 namespace Lumpn.Storylets.Builders
 {
@@ -12,6 +13,9 @@ namespace Lumpn.Storylets.Builders
 
         public ClusterBuilder(SymbolLookup lookup, int minClusterSize)
         {
+            Assert.NotNull(lookup);
+            Assert.Greater(minClusterSize, 0);
+
             this.lookup = lookup;
             this.minClusterSize = minClusterSize;
         }
@@ -26,14 +30,17 @@ namespace Lumpn.Storylets.Builders
         public IRuleset Build()
         {
             var rules = ruleBuilders.Select(p => p.Build());
-            return Build(rules);
+            return Build(rules, minClusterSize);
         }
 
-        private IRuleset Build(IEnumerable<Rule> rules)
+        public static IRuleset Build(IEnumerable<Rule> rules, int minClusterSize)
         {
+            Assert.NotNull(rules);
+            Assert.Greater(minClusterSize, 0);
+
             var array = rules.ToArray();
             Array.Sort(array, RuleSpecificityComparer.Default);
-            return Build(array);
+            return Build(array, minClusterSize);
         }
 
         //                     T                      threshold
@@ -48,7 +55,7 @@ namespace Lumpn.Storylets.Builders
         //                     |--------------------| above range
         // => below: rule 1-3
         // => above: rule 2-5
-        private IRuleset Build(Rule[] rules)
+        private static IRuleset Build(Rule[] rules, int minClusterSize)
         {
             var identifiers = rules.SelectMany(p => p.Predicates)
                                    .Select(p => p.identifier)
@@ -59,7 +66,7 @@ namespace Lumpn.Storylets.Builders
 
             int bestIdentifier = -1;
             int bestThreshold = 0;
-            int numBest = int.MaxValue;
+            int bestSize = int.MaxValue;
             foreach (var identifier in identifiers)
             {
                 var predicates = rules.Where(p => HasPredicate(p, identifier))
@@ -78,20 +85,26 @@ namespace Lumpn.Storylets.Builders
                 var numLarger = Math.Max(numBelow, numAbove);
 
                 var numNoPredicate = rules.Length - predicates.Length;
-                var num = numLarger + numNoPredicate;
+                var halfSize = numLarger + numNoPredicate;
 
-                if (num < numBest)
+                if (halfSize < bestSize)
                 {
-                    numBest = num;
+                    bestSize = halfSize;
                     bestIdentifier = identifier;
                     bestThreshold = threshold;
                 }
 
-                UnityEngine.Debug.LogFormat("id {0}, threshold {1}, below {2}, above {3}, no predicate {4}, total {5}, best {6}, best id {7}",
-                    identifier, threshold, numBelow, numAbove, numNoPredicate, num, numBest, bestIdentifier);
+                UnityEngine.Debug.LogFormat("id {0}, threshold {1}, below {2}, above {3}, no predicate {4}, half size {5}, best {6}, best id {7}",
+                    identifier, threshold, numBelow, numAbove, numNoPredicate, halfSize, bestSize, bestIdentifier);
             }
 
-            var numCut = rules.Length - numBest;
+            if (bestIdentifier < 0)
+            {
+                UnityEngine.Debug.LogFormat("No identifier found to cut. Keep {0} rules", rules.Length);
+                return new Ruleset(rules);
+            }
+
+            var numCut = rules.Length - bestSize;
             if (numCut < minClusterSize)
             {
                 UnityEngine.Debug.LogFormat("Cut {0} too small. Keep {1} rules", numCut, rules.Length);
@@ -105,8 +118,8 @@ namespace Lumpn.Storylets.Builders
                 rules.Length, numCut, bestIdentifier, bestThreshold, rulesBelow.Length, rulesAbove.Length);
 
             // hierarchical clustering
-            var below = Build(rulesBelow);
-            var above = Build(rulesAbove);
+            var below = Build(rulesBelow, minClusterSize);
+            var above = Build(rulesAbove, minClusterSize);
 
             return new Cluster(bestIdentifier, bestThreshold, below, above);
         }
@@ -114,6 +127,9 @@ namespace Lumpn.Storylets.Builders
         // binary search the threshold that splits the rules into equal halves
         public static int FindThreshold(Predicate[] predicates, int min, int max)
         {
+            Assert.NotNull(predicates);
+            Assert.LessOrEqual(min, max);
+
             while (min < max)
             {
                 int mid = (int)(((long)min + (long)max) / 2); // int could overflow no matter what
@@ -157,38 +173,31 @@ namespace Lumpn.Storylets.Builders
 
         private static bool IsBelow(Rule rule, int identifier, int threshold)
         {
-            var idx = rule.PredicateIndex(identifier);
-            if (idx < 0)
+            if (!rule.TryGetPredicate(identifier, out Predicate predicate))
             {
                 return true;
             }
-
-            var predicate = rule.GetPredicate(idx);
             return IsBelow(predicate, threshold);
         }
 
         private static bool IsAbove(Rule rule, int identifier, int threshold)
         {
-            var idx = rule.PredicateIndex(identifier);
-            if (idx < 0)
+            if (!rule.TryGetPredicate(identifier, out Predicate predicate))
             {
                 return true;
             }
-
-            var predicate = rule.GetPredicate(idx);
             return IsAbove(predicate, threshold);
         }
 
         private static bool HasPredicate(Rule rule, int identifier)
         {
-            var idx = rule.PredicateIndex(identifier);
-            return (idx >= 0);
+            return rule.TryGetPredicate(identifier, out Predicate predicate);
         }
 
         private static Predicate GetPredicate(Rule rule, int identifier)
         {
-            var idx = rule.PredicateIndex(identifier);
-            return rule.GetPredicate(idx);
+            rule.TryGetPredicate(identifier, out Predicate predicate);
+            return predicate;
         }
     }
 }
