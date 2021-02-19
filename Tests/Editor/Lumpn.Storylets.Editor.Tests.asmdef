@@ -1,0 +1,18 @@
+{
+    "name": "Lumpn.Storylets.Editor.Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b8169d2f5332e3e4a84c91dc94538e01"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

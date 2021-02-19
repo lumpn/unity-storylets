@@ -1,0 +1,17 @@
+{
+  "name": "de.lumpn.unity-storylets",
+  "version": "1.0.0",
+  "displayName": "Lumpn Storylets",
+  "description": "Storylets. You want them.",
+  "dependencies": {
+    "com.unity.ext.nunit": "1.0.0"
+  },
+  "keywords": [
+    "lumpn",
+    "storylets"
+  ],
+  "author": {
+    "name": "Jonas Boetel",
+    "url": "https://github.com/lumpn"
+  }
+}

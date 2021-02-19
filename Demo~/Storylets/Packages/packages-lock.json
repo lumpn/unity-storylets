@@ -18,6 +18,14 @@
       },
       "url": "https://packages.unity.com"
     },
+    "de.lumpn.unity-storylets": {
+      "version": "file:../../../",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.0"
+      }
+    },
     "com.unity.modules.imgui": {
       "version": "1.0.0",
       "depth": 1,
