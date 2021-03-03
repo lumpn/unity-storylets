@@ -10,7 +10,7 @@ namespace Lumpn.Storylets.Builders
 
         public PredicateBuilder(SymbolLookup lookup, int identifier)
         {
-            Assert.NotNull(lookup);
+            DebugAssert.NotNull(lookup);
 
             this.lookup = lookup;
             this.identifier = identifier;
@@ -23,7 +23,7 @@ namespace Lumpn.Storylets.Builders
 
         public PredicateBuilder EqualTo(int value)
         {
-            Assert.NotEqual(min, Constants.NoValue);
+            DebugAssert.NotEqual(min, Constants.NoValue);
 
             min = value;
             max = value;
@@ -40,9 +40,9 @@ namespace Lumpn.Storylets.Builders
         // [min, max] both inclusive
         public PredicateBuilder Between(int min, int max)
         {
-            Assert.NotEqual(min, Constants.NoValue);
-            Assert.NotEqual(max, Constants.NoValue);
-            Assert.LessOrEqual(min, max);
+            DebugAssert.NotEqual(min, Constants.NoValue);
+            DebugAssert.NotEqual(max, Constants.NoValue);
+            DebugAssert.LessOrEqual(min, max);
 
             this.min = min;
             this.max = max;

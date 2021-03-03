@@ -13,8 +13,8 @@ namespace Lumpn.Storylets.Builders
 
         public ClusterBuilder(SymbolLookup lookup, int minClusterSize)
         {
-            Assert.NotNull(lookup);
-            Assert.Greater(minClusterSize, 0);
+            DebugAssert.NotNull(lookup);
+            DebugAssert.Greater(minClusterSize, 0);
 
             this.lookup = lookup;
             this.minClusterSize = minClusterSize;
@@ -35,8 +35,8 @@ namespace Lumpn.Storylets.Builders
 
         public static IRuleset Build(IEnumerable<Rule> rules, int minClusterSize)
         {
-            Assert.NotNull(rules);
-            Assert.Greater(minClusterSize, 0);
+            DebugAssert.NotNull(rules);
+            DebugAssert.Greater(minClusterSize, 0);
 
             var array = rules.ToArray();
             Array.Sort(array, RuleSpecificityComparer.Default);
@@ -123,8 +123,8 @@ namespace Lumpn.Storylets.Builders
         // using long because int arithmetic could overflow no matter what
         public static int FindThreshold(Predicate[] predicates, long min, long max)
         {
-            Assert.NotNull(predicates);
-            Assert.LessOrEqual(min, max);
+            DebugAssert.NotNull(predicates);
+            DebugAssert.LessOrEqual(min, max);
 
             while (min < max - 1)
             {

@@ -10,7 +10,7 @@ namespace Lumpn.Storylets
         // [min, max] both inclusive
         public Predicate(int identifier, int min, int max)
         {
-            Assert.LessOrEqual(min, max);
+            DebugAssert.LessOrEqual(min, max);
 
             this.identifier = identifier;
             this.min = min;

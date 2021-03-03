@@ -118,7 +118,7 @@ namespace Lumpn.Storylets.Tests
         }
 
         /// Fisher-Yates shuffle
-        private static void Shuffle(int[] values, System.Random random)
+        private static void Shuffle(int[] values, Random random)
         {
             int n = values.Length;
             for (int i = 0; i < n - 1; i++)

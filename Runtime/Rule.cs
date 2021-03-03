@@ -16,8 +16,8 @@ namespace Lumpn.Storylets
 
         public Rule(IEnumerable<Predicate> predicates, IAction action)
         {
-            Assert.NotNull(predicates);
-            Assert.NotNull(action);
+            DebugAssert.NotNull(predicates);
+            DebugAssert.NotNull(action);
 
             var array = predicates.ToArray();
             Array.Sort(array, PredicateIdentifierComparer.Default);

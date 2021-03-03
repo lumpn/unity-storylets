@@ -12,8 +12,8 @@ namespace Lumpn.Storylets.Builders
 
         public RuleBuilder(SymbolLookup lookup, IAction action)
         {
-            Assert.NotNull(lookup);
-            Assert.NotNull(action);
+            DebugAssert.NotNull(lookup);
+            DebugAssert.NotNull(action);
 
             this.lookup = lookup;
             this.action = action;
@@ -34,7 +34,7 @@ namespace Lumpn.Storylets.Builders
 
         public RuleBuilder SetAction(IAction action)
         {
-            Assert.NotNull(action);
+            DebugAssert.NotNull(action);
 
             this.action = action;
             return this;

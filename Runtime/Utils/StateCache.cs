@@ -2,20 +2,27 @@ namespace Lumpn.Storylets.Utils
 {
     public sealed class StateCache : IState
     {
-        private struct Entry
+        private struct CachedVariable
         {
-            public int call;
-            public int variableIdentifier;
-            public int variableValue;
+            public readonly int call;
+            public readonly int identifier;
+            public readonly int value;
+
+            public CachedVariable(int call, int identifier, int value)
+            {
+                this.call = call;
+                this.identifier = identifier;
+                this.value = value;
+            }
         }
 
-        private readonly Entry[] entries;
+        private readonly CachedVariable[] entries;
         private readonly IState state;
         private int call = 1;
 
         public StateCache(IState state, int capacity)
         {
-            this.entries = new Entry[capacity];
+            this.entries = new CachedVariable[capacity];
             this.state = state;
         }
 
@@ -29,17 +36,16 @@ namespace Lumpn.Storylets.Utils
             var idx = identifier % entries.Length;
             var entry = entries[idx];
 
-            if (entry.call == call && entry.variableIdentifier == identifier)
+            if (entry.call == call && entry.identifier == identifier)
             {
                 // cache hit
-                return entry.variableValue;
+                return entry.value;
             }
 
             // cache miss
             var value = state.GetValue(identifier);
-            entry.call = call;
-            entry.variableIdentifier = identifier;
-            entry.variableValue = value;
+            entries[idx] = new CachedVariable(call, identifier, value);
+
             return value;
         }
     }

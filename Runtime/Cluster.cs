@@ -10,8 +10,8 @@ namespace Lumpn.Storylets
 
         public Cluster(int identifier, int threshold, IRuleset below, IRuleset above)
         {
-            Assert.NotNull(below);
-            Assert.NotNull(above);
+            DebugAssert.NotNull(below);
+            DebugAssert.NotNull(above);
 
             this.identifier = identifier;
             this.threshold = threshold;

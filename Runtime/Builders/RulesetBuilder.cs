@@ -11,7 +11,7 @@ namespace Lumpn.Storylets.Builders
 
         public RulesetBuilder(SymbolLookup lookup)
         {
-            Assert.NotNull(lookup);
+            DebugAssert.NotNull(lookup);
 
             this.lookup = lookup;
         }

@@ -3,7 +3,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Lumpn.Storylets.Utils
 {
-    public static class Assert
+    public static class DebugAssert
     {
         [DebuggerHidden]
         public static void NotNull(object obj)

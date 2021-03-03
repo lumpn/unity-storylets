@@ -12,7 +12,7 @@ namespace Lumpn.Storylets
 
         public State(IEnumerable<Variable> variables)
         {
-            Assert.NotNull(variables);
+            DebugAssert.NotNull(variables);
 
             var array = variables.ToArray();
             Array.Sort(array, VariableIdentifierComparer.Default);

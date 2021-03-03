@@ -12,7 +12,7 @@ namespace Lumpn.Storylets
 
         public Ruleset(IEnumerable<Rule> rules)
         {
-            Assert.NotNull(rules);
+            DebugAssert.NotNull(rules);
 
             var array = rules.ToArray();
             Array.Sort(array, RuleSpecificityComparer.Default);

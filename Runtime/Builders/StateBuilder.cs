@@ -11,7 +11,7 @@ namespace Lumpn.Storylets.Builders
 
         public StateBuilder(SymbolLookup lookup)
         {
-            Assert.NotNull(lookup);
+            DebugAssert.NotNull(lookup);
             this.lookup = lookup;
         }
 
