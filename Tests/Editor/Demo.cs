@@ -1,4 +1,4 @@
-﻿using Lumpn.Storylets.Builders;
+using Lumpn.Storylets.Builders;
 using NUnit.Framework;
 
 namespace Lumpn.Storylets.Tests

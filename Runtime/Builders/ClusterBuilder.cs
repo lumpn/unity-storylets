@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lumpn.Storylets.Utils;
@@ -57,11 +57,12 @@ namespace Lumpn.Storylets.Builders
         // => above: rule 2-5
         private static IRuleset Build(Rule[] rules, int minClusterSize)
         {
-            var identifiers = rules.SelectMany(p => p.Predicates)
-                                   .Select(p => p.identifier)
-                                   .Distinct()
-                                   .OrderBy(p => p)
-                                   .ToArray();
+            var identifiers = rules
+                                .SelectMany(p => p.Predicates)
+                                .Select(p => p.identifier)
+                                .Distinct()
+                                .OrderBy(p => p)
+                                .ToArray();
 
             // find identifier and threshold which cuts away the most rules
             int bestIdentifier = -1;
@@ -70,9 +71,10 @@ namespace Lumpn.Storylets.Builders
             foreach (var identifier in identifiers)
             {
                 // relevant predicates
-                var predicates = rules.Where(p => HasPredicate(p, identifier))
-                                      .Select(p => GetPredicate(p, identifier))
-                                      .ToArray();
+                var predicates = rules
+                                    .Where(p => HasPredicate(p, identifier))
+                                    .Select(p => GetPredicate(p, identifier))
+                                    .ToArray();
 
                 // find threshold
                 var min = predicates.Min(p => p.min);

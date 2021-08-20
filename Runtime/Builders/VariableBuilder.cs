@@ -1,4 +1,4 @@
-﻿namespace Lumpn.Storylets.Builders
+namespace Lumpn.Storylets.Builders
 {
     public sealed class VariableBuilder
     {
