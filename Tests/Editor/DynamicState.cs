@@ -14,7 +14,7 @@ namespace Lumpn.Storylets.Tests
 
         public int GetValue(int identifier)
         {
-            return variables.GetOrFallback(identifier, Constants.NoValue);
+            return variables.GetOrDefault(identifier, Constants.NoValue);
         }
     }
 }

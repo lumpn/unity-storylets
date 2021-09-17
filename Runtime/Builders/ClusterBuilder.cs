@@ -57,8 +57,7 @@ namespace Lumpn.Storylets.Builders
         // => above: rule 2-5
         private static IRuleset Build(Rule[] rules, int minClusterSize)
         {
-            var identifiers = rules
-                                .SelectMany(p => p.Predicates)
+            var identifiers = Rule.GetPredicates(rules)
                                 .Select(p => p.identifier)
                                 .Distinct()
                                 .OrderBy(p => p)

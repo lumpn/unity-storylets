@@ -11,8 +11,7 @@ namespace Lumpn.Storylets
         private readonly Predicate[] predicates;
         private readonly IAction action;
 
-        public int PredicateCount { get { return predicates.Length; } }
-        public IEnumerable<Predicate> Predicates { get { return predicates; } }
+        public int predicateCount { get { return predicates.Length; } }
 
         public Rule(IEnumerable<Predicate> predicates, IAction action)
         {
@@ -54,6 +53,11 @@ namespace Lumpn.Storylets
         public void Execute()
         {
             action.Execute();
+        }
+
+        public static IEnumerable<Predicate> GetPredicates(IEnumerable<Rule> rules)
+        {
+            return rules.SelectMany(p => p.predicates);
         }
     }
 }

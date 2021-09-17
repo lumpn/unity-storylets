@@ -22,7 +22,7 @@ namespace Lumpn.Storylets.Builders
 
         public int Query(string symbol)
         {
-            return symbols.GetOrFallback(symbol, -1);
+            return symbols.GetOrDefault(symbol, -1);
         }
     }
 }
