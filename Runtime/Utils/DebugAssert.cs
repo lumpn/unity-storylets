@@ -1,5 +1,5 @@
-using System.Diagnostics;
-using Debug = UnityEngine.Debug;
+using UnityEngine;
+using DebuggerHiddenAttribute = System.Diagnostics.DebuggerHiddenAttribute;
 
 namespace Lumpn.Storylets.Utils
 {
